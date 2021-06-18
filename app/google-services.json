@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "876314285460",
+    "project_id": "eldritch-music",
+    "storage_bucket": "eldritch-music.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:876314285460:android:8c9d3c395e3a2c01ff6b81",
+        "android_client_info": {
+          "package_name": "com.yuckyh.eldritchmusic"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "876314285460-798q8mbfq1t1256qevm7si7mgsofl0s3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.yuckyh.eldritchmusic",
+            "certificate_hash": "0f440e8068f04675f279582b75ae985572ada37f"
+          }
+        },
+        {
+          "client_id": "876314285460-93f76i6jss4tqr022q9cp4odk2rdtcqp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBW3nwr2apcAsQQjFbk_jh-5-mhsKHL2bg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "876314285460-93f76i6jss4tqr022q9cp4odk2rdtcqp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

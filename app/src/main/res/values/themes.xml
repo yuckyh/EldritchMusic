@@ -1,0 +1,60 @@
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.EldritchMusic" parent="Base.Theme.EldritchMusic" />
+
+    <style name="Base.Theme.EldritchMusic" parent="Base.Theme.MaterialThemeBuilder">
+        <!--Material color attributes (light theme) -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryVariant">@color/primary_dark</item>
+        <item name="colorSecondary">@color/secondary</item>
+        <item name="colorSecondaryVariant">@color/secondary_dark</item>
+
+        <item name="android:colorBackground">@color/white_50</item>
+        <item name="colorSurface">@color/white_50</item>
+
+        <item name="colorOnPrimary">@color/white_50</item>
+        <item name="colorOnSecondary">@color/white_50</item>
+        <item name="colorOnBackground">@color/black_900</item>
+        <item name="colorOnSurface">@color/black_900</item>
+        <item name="colorOnError">@color/white_50</item>
+        <!--Material type attributes-->
+        <item name="textAppearanceHeadline1">@style/TextAppearance.EldritchMusic.Headline1</item>
+        <item name="textAppearanceHeadline2">@style/TextAppearance.EldritchMusic.Headline2</item>
+        <item name="textAppearanceHeadline3">@style/TextAppearance.EldritchMusic.Headline3</item>
+        <item name="textAppearanceHeadline4">@style/TextAppearance.EldritchMusic.Headline4</item>
+        <item name="textAppearanceHeadline5">@style/TextAppearance.EldritchMusic.Headline5</item>
+        <item name="textAppearanceHeadline6">@style/TextAppearance.EldritchMusic.Headline6</item>
+        <item name="textAppearanceSubtitle1">@style/TextAppearance.EldritchMusic.Subtitle1</item>
+        <item name="textAppearanceSubtitle2">@style/TextAppearance.EldritchMusic.Subtitle2</item>
+        <item name="textAppearanceBody1">@style/TextAppearance.EldritchMusic.Body1</item>
+        <item name="textAppearanceBody2">@style/TextAppearance.EldritchMusic.Body2</item>
+        <item name="textAppearanceButton">@style/TextAppearance.EldritchMusic.Button</item>
+        <item name="textAppearanceCaption">@style/TextAppearance.EldritchMusic.Caption</item>
+        <item name="textAppearanceOverline">@style/TextAppearance.EldritchMusic.Overline</item>
+        <!--Material shape attributes-->
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.EldritchMusic.SmallComponent</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.EldritchMusic.MediumComponent</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.EldritchMusic.LargeComponent</item>
+        <!--Component styles-->
+        <item name="appBarLayoutStyle">@style/Widget.MaterialComponents.ActionBar.Primary</item>
+        <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView.PrimarySurface</item>
+        <item name="tabStyle">@style/Widget.MaterialComponents.TabLayout.PrimarySurface</item>
+        <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar.PrimarySurface</item>
+
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert</item>
+        <item name="floatingActionButtonStyle">@style/Widget.EldritchMusic.FloatingActionButton</item>
+    </style>
+
+    <!-- Base application theme. -->
+    <style name="Base.Theme.MaterialThemeBuilder" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:statusBarColor" tools:ignore="NewApi">?attr/colorSurface</item>
+        <item name="android:windowLightStatusBar" tools:ignore="NewApi">true</item>
+<!--        <item name="android:navigationBarColor" tools:ignore="NewApi">?android:attr/colorBackground</item>-->
+<!--        <item name="android:windowLightNavigationBar" tools:ignore="NewApi">true</item>-->
+<!--        <item name="android:navigationBarDividerColor" tools:ignore="NewApi">?attr/colorControlHighlight</item>-->
+    </style>
+
+    <style name="Widget.EldritchMusic.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.EldritchMusic.FloatingActionButton</item>
+    </style>
+</resources>
