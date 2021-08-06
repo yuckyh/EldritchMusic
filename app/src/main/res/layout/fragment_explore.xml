@@ -7,11 +7,10 @@
     tools:context=".fragments.ExploreFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvExplore"
+        android:id="@+id/rvExploreSongs"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:onClick="onItemClick"
         android:scrollbars="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/song_item" />
+        tools:listitem="@layout/item_song" />
 </FrameLayout>

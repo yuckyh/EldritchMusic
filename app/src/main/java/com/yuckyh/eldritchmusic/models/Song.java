@@ -1,42 +1,21 @@
 package com.yuckyh.eldritchmusic.models;
 
-import android.os.Parcel;
+import android.util.Log;
+
+import com.google.firebase.firestore.DocumentReference;
+import com.yuckyh.eldritchmusic.registries.AlbumRegistry;
+import com.yuckyh.eldritchmusic.registries.ArtisteRegistry;
+import com.yuckyh.eldritchmusic.registries.Registry;
+
+import java.util.ArrayList;
 
 public class Song extends Model {
-    public static final Creator<Song> CREATOR = new Creator<Song>() {
-        @Override
-        public Song createFromParcel(Parcel in) {
-            return new Song(in);
-        }
-
-        @Override
-        public Song[] newArray(int size) {
-            return new Song[size];
-        }
-    };
-    private String mId, mName, mFilePath;
+    private String mId, mName;
     private double mDuration;
     private Album mAlbum;
+    private DocumentReference mAlbumId;
 
-    public Song() {
-        super();
-    }
-
-    public Song(String id, String name, double duration, Album album, String filePath) {
-        super(id);
-        mName = name;
-        mFilePath = filePath;
-        mAlbum = album;
-        mDuration = duration;
-        mAlbum.addSong(this);
-    }
-
-    protected Song(Parcel in) {
-        mId = in.readString();
-        mName = in.readString();
-        mFilePath = in.readString();
-        mDuration = in.readDouble();
-    }
+    public Song() {}
 
     public String getId() {
         return this.mId;
@@ -52,14 +31,6 @@ public class Song extends Model {
 
     public void setName(String name) {
         mName = name;
-    }
-
-    public String getFilePath() {
-        return this.mFilePath;
-    }
-
-    public void setFilePath(String filePath) {
-        mFilePath = filePath;
     }
 
     public double getDuration() {
@@ -78,17 +49,20 @@ public class Song extends Model {
         mAlbum = album;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public DocumentReference getAlbumId() {
+        return mAlbumId;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mId);
-        dest.writeString(mName);
-        dest.writeString(mFilePath);
-        dest.writeDouble(mDuration);
-        dest.writeParcelable(mAlbum, flags);
+    public void setAlbumId(DocumentReference albumId) {
+        mAlbumId = albumId;
+        setAlbum(AlbumRegistry.getInstance().refToObject(albumId));
+    }
+
+    public void addToAlbum() {
+
+        if (mAlbum == null) {
+            return;
+        }
+        mAlbum.addSong(this);
     }
 }

@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Eldritch Music</string>
+    <string name="web_client_id" translatable="false">876314285460-93f76i6jss4tqr022q9cp4odk2rdtcqp.apps.googleusercontent.com</string>
+    <string name="storage_url" translatable="false">gs://eldritch-music.appspot.com</string>
+    <string name="facebook_application_id" translatable="false">201290885201037</string>
+    <string name="facebook_login_protocol_scheme" translatable="false">fb201290885201037</string>
 </resources>

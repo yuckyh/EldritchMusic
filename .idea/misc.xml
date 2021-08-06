@@ -1,6 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.19506578947368422" />
+        <entry key="app/src/main/res/drawable/ic_round_expand_more_24.xml" value="0.19506578947368422" />
+        <entry key="app/src/main/res/drawable/ic_round_favorite_toggle_24.xml" value="0.1611842105263158" />
+        <entry key="app/src/main/res/drawable/ic_round_library_music_24.xml" value="0.26776315789473687" />
+        <entry key="app/src/main/res/drawable/ic_round_play_arrow_24.xml" value="0.19506578947368422" />
+        <entry key="app/src/main/res/drawable/ic_round_play_pause_24.xml" value="0.26776315789473687" />
+        <entry key="app/src/main/res/drawable/ic_round_repeat_one_24.xml" value="0.19506578947368422" />
+        <entry key="app/src/main/res/font/noto_sans.xml" value="0.1700657894736842" />
+        <entry key="app/src/main/res/font/roboto_slab.xml" value="0.1700657894736842" />
+        <entry key="app/src/main/res/layout/activity_add_to_playlist.xml" value="0.2575657894736842" />
+        <entry key="app/src/main/res/layout/activity_album.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_artiste.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_auth.xml" value="0.1980263157894737" />
+        <entry key="app/src/main/res/layout/activity_create_playlist.xml" value="0.1457236842105263" />
+        <entry key="app/src/main/res/layout/activity_home.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_playlist.xml" value="0.1980263157894737" />
+        <entry key="app/src/main/res/layout/activity_song_player.xml" value="0.1534054742202419" />
+        <entry key="app/src/main/res/layout/explore_song_item.xml" value="0.6491117982909982" />
+        <entry key="app/src/main/res/layout/fragment_explore.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.1770291657246213" />
+        <entry key="app/src/main/res/layout/item_artiste_card.xml" value="0.1103749191984486" />
+        <entry key="app/src/main/res/layout/item_playlist.xml" value="0.1103749191984486" />
+        <entry key="app/src/main/res/layout/item_playlist_card.xml" value="0.3926127905328694" />
+        <entry key="app/src/main/res/layout/item_song.xml" value="0.1103749191984486" />
+        <entry key="app/src/main/res/layout/item_song_card.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/item_song_card_simple.xml" value="0.12976729153199743" />
+        <entry key="app/src/main/res/layout/playlist_item.xml" value="0.3537039966748613" />
+        <entry key="app/src/main/res/layout/profile_artiste_item.xml" value="0.32916666666666666" />
+        <entry key="app/src/main/res/layout/profile_playlist_item.xml" value="0.40616966580976865" />
+        <entry key="app/src/main/res/layout/profile_playlisty_item.xml" value="0.16578947368421051" />
+        <entry key="app/src/main/res/layout/simple_song_item.xml" value="0.1457236842105263" />
+        <entry key="app/src/main/res/layout/song_item.xml" value="0.36616454229432216" />
+        <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.20618892508143322" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

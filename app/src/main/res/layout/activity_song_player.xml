@@ -1,8 +1,176 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.SongPlayerActivity">
+
+    <ImageView
+        android:id="@+id/imgViewSongPlayerBg"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        android:alpha="0.5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardView"
+        android:layout_width="288dp"
+        android:layout_height="288dp"
+        android:layout_marginTop="32dp"
+        app:cardCornerRadius="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabAddToPlaylist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:contentDescription="Add To Playlist Button"
+                app:fabSize="auto"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:srcCompat="@drawable/ic_round_playlist_add_24" />
+
+            <ImageView
+                android:id="@+id/imgViewAlbumArt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:srcCompat="@tools:sample/avatars" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <ImageButton
+        android:id="@+id/imgBtnPlayPause"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="12dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Play or Pause Song Button"
+        android:scaleType="fitCenter"
+        app:tint="?attr/colorOnBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtViewArtiste"
+        app:srcCompat="@drawable/ic_round_play_pause_24" />
+
+    <ImageButton
+        android:id="@+id/imgBtnPrev"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="12dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Previous Song Button"
+        android:scaleType="fitCenter"
+        app:tint="?attr/colorOnBackground"
+        app:layout_constraintEnd_toStartOf="@+id/imgBtnPlayPause"
+        app:layout_constraintStart_toEndOf="@+id/imgBtnLoop"
+        app:layout_constraintTop_toBottomOf="@+id/txtViewArtiste"
+        app:srcCompat="@drawable/ic_round_skip_previous_24" />
+
+    <ImageButton
+        android:id="@+id/imgBtnLoop"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="12dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Loop Button"
+        android:scaleType="fitCenter"
+        app:tint="?attr/colorOnBackground"
+        app:layout_constraintStart_toStartOf="@+id/txtViewPlayPosition"
+        app:layout_constraintTop_toBottomOf="@+id/txtViewArtiste"
+        app:srcCompat="@drawable/ic_round_repeat_24" />
+
+    <ImageButton
+        android:id="@+id/imgBtnNext"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="12dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Next Song Button"
+        android:scaleType="fitCenter"
+        app:tint="?attr/colorOnBackground"
+        app:layout_constraintEnd_toStartOf="@+id/imgBtnShuffle"
+        app:layout_constraintStart_toEndOf="@+id/imgBtnPlayPause"
+        app:layout_constraintTop_toBottomOf="@+id/txtViewArtiste"
+        app:srcCompat="@drawable/ic_round_skip_next_24" />
+
+    <ImageButton
+        android:id="@+id/imgBtnShuffle"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="12dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Shuffle Button"
+        android:scaleType="fitCenter"
+        app:tint="?attr/colorOnBackground"
+        app:layout_constraintEnd_toEndOf="@+id/txtViewPlayDuration"
+        app:layout_constraintTop_toBottomOf="@+id/txtViewArtiste"
+        app:srcCompat="@drawable/ic_round_shuffle_24" />
+
+    <SeekBar
+        android:id="@+id/seekBarSong"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="@+id/materialCardView"
+        app:layout_constraintStart_toStartOf="@+id/materialCardView"
+        app:layout_constraintTop_toBottomOf="@+id/materialCardView" />
+
+    <TextView
+        android:id="@+id/txtViewPlayPosition"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0:00"
+        android:textAppearance="@style/TextAppearance.EldritchMusic.Body2"
+        app:layout_constraintStart_toStartOf="@+id/seekBarSong"
+        app:layout_constraintTop_toBottomOf="@+id/seekBarSong" />
+
+    <TextView
+        android:id="@+id/txtViewPlayDuration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="4:00"
+        android:textAppearance="@style/TextAppearance.EldritchMusic.Body2"
+        app:layout_constraintEnd_toEndOf="@+id/seekBarSong"
+        app:layout_constraintTop_toBottomOf="@+id/seekBarSong" />
+
+    <TextView
+        android:id="@+id/txtViewArtiste"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Artiste"
+        android:textAppearance="@style/TextAppearance.EldritchMusic.Body2"
+        android:textColor="?attr/colorOnBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtViewSongTitle" />
+
+    <TextView
+        android:id="@+id/txtViewSongTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Song Title"
+        android:textAppearance="@style/TextAppearance.EldritchMusic.Headline4"
+        android:textColor="?attr/colorOnBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtViewPlayPosition" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,7 +9,8 @@ public class ArtisteRegistry extends Registry<Artiste> {
         return INSTANCE;
     }
 
-    public void syncFromDb() {
+    public ArtisteRegistry syncFromDb() {
         super.syncFromDb("artistes", Artiste.class);
+        return this;
     }
 }

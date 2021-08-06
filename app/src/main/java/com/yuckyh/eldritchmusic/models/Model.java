@@ -1,16 +1,8 @@
 package com.yuckyh.eldritchmusic.models;
 
-import android.os.Parcelable;
-
-public abstract class Model implements Parcelable {
-    protected String mId;
-
-    protected Model() {
-    }
-
-    protected Model(String id) {
-        mId = id;
-    }
-
+public abstract class Model {
+    protected static final String TAG = Model.class.getSimpleName();
+    public Model() {}
     public abstract String getId();
+    public abstract void setId(String id);
 }

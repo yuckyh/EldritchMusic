@@ -13,6 +13,6 @@
     </style>
 
     <style name="ShapeAppearanceOverlay.EldritchMusic.FloatingActionButton" parent="">
-        <item name="cornerSize">20dp</item>
+        <item name="cornerSize">24dp</item>
     </style>
 </resources>

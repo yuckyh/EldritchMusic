@@ -5,8 +5,7 @@ import com.yuckyh.eldritchmusic.R;
 public enum HomeFragmentEnum {
     LIBRARY_FRAGMENT(0, R.id.menu_library),
     EXPLORE_FRAGMENT(1, R.id.menu_explore),
-    PROFILE_FRAGMENT(2, R.id.menu_profile),
-    SETTING_FRAGMENT(3, R.id.menu_settings);
+    PROFILE_FRAGMENT(2, R.id.menu_profile);
 
     private final int mPosition, mItemId;
 
@@ -25,13 +24,13 @@ public enum HomeFragmentEnum {
         return -1;
     }
 
-    public static int getItemId(int position) {
-        for (HomeFragmentEnum val : HomeFragmentEnum.values()) {
-            if (val.mPosition == position) {
-                return val.mItemId;
-            }
-        }
-
-        return -1;
-    }
+//    public static int getItemId(int position) {
+//        for (HomeFragmentEnum val : HomeFragmentEnum.values()) {
+//            if (val.mPosition == position) {
+//                return val.mItemId;
+//            }
+//        }
+//
+//        return -1;
+//    }
 }
