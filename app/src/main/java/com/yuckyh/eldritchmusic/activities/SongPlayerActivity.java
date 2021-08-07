@@ -5,18 +5,17 @@ import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
-import androidx.palette.graphics.Palette;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -60,7 +59,7 @@ public class SongPlayerActivity extends AppCompatActivity {
             @Override
             public void onSongReload(Song song, double position, boolean isLooping, boolean isQueueLooping, boolean isShuffling) {
                 mTxtViewSongTitle.setText(song.getName());
-                mTxtViewArtiste.setText(song.getAlbum().getArtiste().getName());
+                mTxtViewArtiste.setText(song.appGetAlbum().appGetArtiste().getName());
                 mTxtViewPlayPosition.setText("0:00");
                 mTxtViewPlayDuration.setText(Duration.minutesToTimer(song.getDuration()));
                 mSeekBarSong.setMax((int) (song.getDuration() * 600));
@@ -139,6 +138,12 @@ public class SongPlayerActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.song_player_menu, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();
@@ -193,7 +198,7 @@ public class SongPlayerActivity extends AppCompatActivity {
 
     private void downloadAlbumArt(Song song) {
         ImageUtil util = new ImageUtil(this);
-        util.downloadImageBitmap(song.getAlbum().getAlbumArtUrl(),
+        util.downloadImageBitmap(song.appGetAlbum().getAlbumArtUrl(),
                 () -> {
                     mImgViewAlbumArt.setImageBitmap(util.getBitmap());
 

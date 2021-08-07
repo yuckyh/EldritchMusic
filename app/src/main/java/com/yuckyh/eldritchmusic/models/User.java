@@ -25,7 +25,7 @@ public class User extends Model {
         super();
         mId = id;
         mName = name;
-        mFollowedArtisteIds = mFollowedAlbumIds = mFollowedPlaylistIds = new ArrayList<>();
+        mFollowedArtisteIds = mFollowedAlbumIds = mFollowedPlaylistIds = mRecentlyPlayedSongIds = mFavouriteIds = new ArrayList<>();
     }
 
     public String getId() {
@@ -36,7 +36,25 @@ public class User extends Model {
         mId = id;
     }
 
-    public ArrayList<Album> getFollowedAlbums() {
+    @Override
+    public void setObjectsFromRefs() {
+        setRecentlyPlayedSongs(SongRegistry.getInstance().refListToObjectList(mRecentlyPlayedSongIds));
+        setFavourites(SongRegistry.getInstance().refListToObjectList(mFavouriteIds));
+        setFollowedAlbums(AlbumRegistry.getInstance().refListToObjectList(mFollowedAlbumIds));
+        setFollowedArtistes(ArtisteRegistry.getInstance().refListToObjectList(mFollowedArtisteIds));
+        setFollowedPlaylists(PlaylistRegistry.getInstance().refListToObjectList(mFollowedPlaylistIds));
+    }
+
+    @Override
+    public void setRefsFromObjects() {
+        setRefArrayToObjArray(mRecentlyPlayedSongIds, mRecentlyPlayedSongs);
+        setRefArrayToObjArray(mFavouriteIds, mFavourites);
+        setRefArrayToObjArray(mFollowedAlbumIds, mFollowedAlbums);
+        setRefArrayToObjArray(mFollowedArtisteIds, mFollowedArtistes);
+        setRefArrayToObjArray(mFollowedPlaylistIds, mFollowedPlaylists);
+    }
+
+    public ArrayList<Album> appGetFollowedAlbums() {
         return mFollowedAlbums;
     }
 
@@ -44,7 +62,7 @@ public class User extends Model {
         mFollowedAlbums = followedAlbums;
     }
 
-    public ArrayList<Artiste> getFollowedArtistes() {
+    public ArrayList<Artiste> appGetFollowedArtistes() {
         return mFollowedArtistes;
     }
 
@@ -52,7 +70,7 @@ public class User extends Model {
         mFollowedArtistes = followedArtistes;
     }
 
-    public ArrayList<Playlist> getFollowedPlaylists() {
+    public ArrayList<Playlist> appGetFollowedPlaylists() {
         return mFollowedPlaylists;
     }
 
@@ -66,7 +84,6 @@ public class User extends Model {
 
     public void setFollowedAlbumIds(ArrayList<DocumentReference> followedAlbumIds) {
         mFollowedAlbumIds = followedAlbumIds;
-        setFollowedAlbums(AlbumRegistry.getInstance().refListToObjectList(mFollowedAlbumIds));
     }
 
     public ArrayList<DocumentReference> getFollowedArtisteIds() {
@@ -75,7 +92,6 @@ public class User extends Model {
 
     public void setFollowedArtisteIds(ArrayList<DocumentReference> followedArtisteIds) {
         mFollowedArtisteIds = followedArtisteIds;
-        setFollowedArtistes(ArtisteRegistry.getInstance().refListToObjectList(mFollowedArtisteIds));
     }
 
     public ArrayList<DocumentReference> getFollowedPlaylistIds() {
@@ -84,18 +100,17 @@ public class User extends Model {
 
     public void setFollowedPlaylistIds(ArrayList<DocumentReference> followedPlaylistIds) {
         mFollowedPlaylistIds = followedPlaylistIds;
-        setFollowedPlaylists(PlaylistRegistry.getInstance().refListToObjectList(mFollowedPlaylistIds));
     }
 
     public void addPlaylist(Playlist playlist) {
         mCreatedPlaylists.add(playlist);
     }
 
-    public ArrayList<Playlist> getCreatedPlaylists() {
+    public ArrayList<Playlist> appGetCreatedPlaylists() {
         return mCreatedPlaylists;
     }
 
-    public ArrayList<Song> getFavourites() {
+    public ArrayList<Song> appGetFavourites() {
         return mFavourites;
     }
 
@@ -109,19 +124,17 @@ public class User extends Model {
 
     public void setFavouriteIds(ArrayList<DocumentReference> favouriteIds) {
         mFavouriteIds = favouriteIds;
-        setFavourites(SongRegistry.getInstance().refListToObjectList(mFavouriteIds));
     }
 
     public void setRecentlyPlayedSongIds(ArrayList<DocumentReference> recentlyPlayedSongIds) {
         mRecentlyPlayedSongIds = recentlyPlayedSongIds;
-        setRecentlyPlayedSongs(SongRegistry.getInstance().refListToObjectList(mRecentlyPlayedSongIds));
     }
 
     public void setFavourites(ArrayList<Song> favourites) {
         mFavourites = favourites;
     }
 
-    public ArrayList<Song> getRecentlyPlayedSongs() {
+    public ArrayList<Song> appGetRecentlyPlayedSongs() {
         return mRecentlyPlayedSongs;
     }
 

@@ -18,6 +18,16 @@ public class Artiste extends Model {
         mId = id;
     }
 
+    @Override
+    public void setObjectsFromRefs() {
+
+    }
+
+    @Override
+    public void setRefsFromObjects() {
+
+    }
+
     public String getName() {
         return mName;
     }

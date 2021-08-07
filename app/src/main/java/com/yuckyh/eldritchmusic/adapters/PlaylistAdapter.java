@@ -10,7 +10,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.card.MaterialCardView;
 import com.yuckyh.eldritchmusic.R;
 import com.yuckyh.eldritchmusic.models.Playlist;
 import com.yuckyh.eldritchmusic.utils.Duration;
@@ -49,11 +48,11 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
 
         holder.mTxtViewPlaylistItemName.setText(playlist.getName());
         if (holder.mTxtViewPlaylistItemDuration != null) {
-            holder.mTxtViewPlaylistItemDuration.setText(Duration.minutesToHours(playlist.getSongsTotalDuration()));
+            holder.mTxtViewPlaylistItemDuration.setText(Duration.minutesToHours(playlist.appGetSongsTotalDuration()));
         }
 
         if (holder.mTxtViewPlaylistItemSongCount != null) {
-            holder.mTxtViewPlaylistItemSongCount.setText(String.format("%d songs", playlist.getSongs().size()));
+            holder.mTxtViewPlaylistItemSongCount.setText(String.format("%d songs", playlist.appGetSongs().size()));
         }
 
         holder.itemView.setOnClickListener(v -> mOnItemClickListener.onClick(playlist.getId()));

@@ -1,16 +1,17 @@
 package com.yuckyh.eldritchmusic.registries;
 
+import android.util.Log;
+
 import com.yuckyh.eldritchmusic.models.Song;
 
 public class SongRegistry extends Registry<Song> {
     private static final SongRegistry INSTANCE = new SongRegistry();
 
-    public static SongRegistry getInstance() {
-        return INSTANCE;
+    protected SongRegistry() {
+        super("songs");
     }
 
-    public SongRegistry syncFromDb() {
-        super.syncFromDb("songs", Song.class);
+    public static SongRegistry getInstance() {
         return INSTANCE;
     }
 

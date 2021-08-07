@@ -26,6 +26,16 @@ public class Album extends Model {
         mId = id;
     }
 
+    @Override
+    public void setObjectsFromRefs() {
+        setArtiste(ArtisteRegistry.getInstance().refToObject(mArtisteId));
+    }
+
+    @Override
+    public void setRefsFromObjects() {
+        mArtisteId.set(mArtiste);
+    }
+
     public String getName() {
         return mName;
     }
@@ -50,7 +60,7 @@ public class Album extends Model {
         mYear = year;
     }
 
-    public Artiste getArtiste() {
+    public Artiste appGetArtiste() {
         return mArtiste;
     }
 
@@ -72,7 +82,6 @@ public class Album extends Model {
 
     public void setArtisteId(DocumentReference artisteId) {
         mArtisteId = artisteId;
-        setArtiste(ArtisteRegistry.getInstance().refToObject(artisteId));
     }
 
     public void addSong(Song song) {
@@ -80,10 +89,13 @@ public class Album extends Model {
     }
 
     public void addToArtiste() {
+        if (mArtiste == null) {
+            return;
+        }
         mArtiste.addAlbum(this);
     }
 
-    public ArrayList<Song> getSongs() {
+    public ArrayList<Song> appGetSongs() {
         return mSongs;
     }
 }

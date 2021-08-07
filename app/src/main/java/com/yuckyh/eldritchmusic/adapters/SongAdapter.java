@@ -13,7 +13,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.card.MaterialCardView;
 import com.yuckyh.eldritchmusic.R;
 import com.yuckyh.eldritchmusic.activities.SongPlayerActivity;
 import com.yuckyh.eldritchmusic.models.Song;
@@ -51,9 +50,9 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
 
         holder.mTxtViewSongItemTitle.setText(song.getName());
         holder.mTxtViewSongItemDuration.setText(Duration.minutesToTimer(song.getDuration()));
-        holder.mTxtViewSongItemArtiste.setText(song.getAlbum().getArtiste().getName());
+        holder.mTxtViewSongItemArtiste.setText(song.appGetAlbum().appGetArtiste().getName());
         ImageUtil util = new ImageUtil(mContext);
-        util.downloadImageBitmap(song.getAlbum().getAlbumArtUrl(),
+        util.downloadImageBitmap(song.appGetAlbum().getAlbumArtUrl(),
                 () -> holder.mImgViewSongItemAlbumArt.setImageBitmap(util.getBitmap()));
 
         holder.itemView.setOnClickListener(v -> openSongPlayer(position, false, false));

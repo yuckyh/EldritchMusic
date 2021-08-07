@@ -88,7 +88,7 @@ public class MusicPlayer {
             if(mPosition == 0 && (mIsQueueLooping || mIsLooping)) {
                 mPosition = mSongQueue.size();
             }
-            Song prevSong = mRegistry.fromId(getIdByPosition(mPosition - 1));
+            Song prevSong = mRegistry.itemFromId(getIdByPosition(mPosition - 1));
 
             mPosition -= 1;
             if (mCurrentSong == prevSong) {
@@ -108,7 +108,7 @@ public class MusicPlayer {
             if(mPosition == (mSongQueue.size() - 1) && (mIsQueueLooping || mIsLooping)) {
                 mPosition = -1;
             }
-            Song nextSong = mRegistry.fromId(getIdByPosition(mPosition + 1));
+            Song nextSong = mRegistry.itemFromId(getIdByPosition(mPosition + 1));
 
             mPosition += 1;
             if (mCurrentSong == nextSong) {
@@ -180,7 +180,7 @@ public class MusicPlayer {
         boolean hasDownloaded = false;
 
         try {
-            mCurrentSong = mRegistry.fromId(getIdByPosition(mPosition));
+            mCurrentSong = mRegistry.itemFromId(getIdByPosition(mPosition));
         } catch (Exception e) {
             Log.e(TAG, "reload: ", e);
         }

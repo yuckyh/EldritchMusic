@@ -16,6 +16,9 @@ import android.widget.ImageView;
 
 import androidx.annotation.ColorInt;
 import androidx.palette.graphics.Palette;
+import androidx.palette.graphics.Target;
+
+import com.yuckyh.eldritchmusic.R;
 
 import java.io.IOException;
 import java.net.URL;
@@ -77,16 +80,16 @@ public class ImageUtil {
         int nightModeFlags = context.getResources().getConfiguration().uiMode &
                 Configuration.UI_MODE_NIGHT_MASK;
 
+        @ColorInt int colorFromAttr = ColorUtil.getColorFromAttr(context.getTheme(), R.attr.colorOnBackground);
+
         if (nightModeFlags == Configuration.UI_MODE_NIGHT_NO) {
-            color = palette.getLightVibrantColor(ColorUtil.getColorFromAttr(context.getTheme(), Color.WHITE));
-
+            color = palette.getLightMutedColor(colorFromAttr);
             double luminance = ColorUtil.getLuminance(color);
-            imageView.setAlpha((float) (1 - luminance));
+            imageView.setAlpha((float) (luminance));
         } else {
-            color = palette.getDarkVibrantColor(ColorUtil.getColorFromAttr(context.getTheme(), Color.WHITE));
-
+            color = palette.getDarkVibrantColor(colorFromAttr);
             double luminance = ColorUtil.getLuminance(color);
-            imageView.setAlpha((float) (1 - luminance));
+            imageView.setAlpha(1f - (float) (luminance));
         }
     }
 }

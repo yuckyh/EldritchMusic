@@ -26,7 +26,18 @@ public class Playlist extends Model {
         mId = id;
     }
 
-    public User getOwner() {
+    @Override
+    public void setObjectsFromRefs() {
+        setSongs(SongRegistry.getInstance().refListToObjectList(mSongIds));
+    }
+
+    @Override
+    public void setRefsFromObjects() {
+        mOwnerId.set(mOwner);
+        setRefArrayToObjArray(mSongIds, mSongs);
+    }
+
+    public User appGetOwner() {
         return mOwner;
     }
 
@@ -42,14 +53,14 @@ public class Playlist extends Model {
         mName = name;
     }
 
-    public ArrayList<Song> getSongs() {
+    public ArrayList<Song> appGetSongs() {
         return mSongs;
     }
 
     public void setSongs(ArrayList<Song> songs) {
         mSongs = songs;
         mSongsTotalDuration = 0;
-        mPlaylistArtUrl = mSongs.get(0).getAlbum().getAlbumArtUrl();
+        mPlaylistArtUrl = mSongs.get(0).appGetAlbum().getAlbumArtUrl();
         for (Song song: mSongs) {
             mSongsTotalDuration += song.getDuration();
         }
@@ -61,7 +72,6 @@ public class Playlist extends Model {
 
     public void setSongIds(ArrayList<DocumentReference> songIds) {
         mSongIds = songIds;
-        setSongs(SongRegistry.getInstance().refListToObjectList(songIds));
     }
 
     public DocumentReference getOwnerId() {
@@ -77,7 +87,7 @@ public class Playlist extends Model {
         mOwner.addPlaylist(this);
     }
 
-    public double getSongsTotalDuration() {
+    public double appGetSongsTotalDuration() {
         return mSongsTotalDuration;
     }
 

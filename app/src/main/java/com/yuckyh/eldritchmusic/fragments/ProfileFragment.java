@@ -67,11 +67,8 @@ public class ProfileFragment extends Fragment {
         List<AuthUI.IdpConfig> providers = Arrays.asList(
                 new AuthUI.IdpConfig.EmailBuilder()
                         .setRequireName(true)
-                        .setAllowNewAccounts(true)
                         .build(),
-                new AuthUI.IdpConfig.GoogleBuilder()
-                        .setSignInOptions(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .build(),
+                new AuthUI.IdpConfig.GoogleBuilder().build(),
                 new AuthUI.IdpConfig.FacebookBuilder().build());
 
         Intent signInIntent = AuthUI.getInstance()
@@ -138,15 +135,16 @@ public class ProfileFragment extends Fragment {
                 PlaylistAdapter playlistAdapter = new PlaylistAdapter(getContext(),
                         new ArrayList<>(),
                         R.layout.item_playlist_card,
-                        0, itemId -> {});
+                        0, itemId -> {
+                });
                 mRvProfilePlaylists.setAdapter(playlistAdapter);
                 mRvProfileArtistes.setAdapter(new ArtisteAdapter(getContext(), new ArrayList<>()));
                 return;
             }
 
-            int followingCount = user.getFollowedArtistes().size();
-            int songCount = user.getFavourites().size();
-            int playlistCount = user.getCreatedPlaylists().size();
+            int followingCount = user.appGetFollowedArtistes().size();
+            int songCount = user.appGetFavourites().size();
+            int playlistCount = user.appGetCreatedPlaylists().size();
 
             if (playlistCount > 0) {
                 mTxtViewPlaylistLabel.setVisibility(View.VISIBLE);
@@ -164,12 +162,12 @@ public class ProfileFragment extends Fragment {
             mTxtViewSongCount.setText(String.valueOf(songCount));
             mTxtViewPlaylistCount.setText(String.valueOf(playlistCount));
             mRvProfilePlaylists.setAdapter(new PlaylistAdapter(getContext(),
-                    user.getCreatedPlaylists(),
+                    user.appGetCreatedPlaylists(),
                     R.layout.item_playlist_card,
                     -1,
                     itemId -> startActivity(new Intent(getContext(), PlaylistActivity.class)
                             .putExtra("id", itemId))));
-            mRvProfileArtistes.setAdapter(new ArtisteAdapter(getContext(), user.getFollowedArtistes()));
+            mRvProfileArtistes.setAdapter(new ArtisteAdapter(getContext(), user.appGetFollowedArtistes()));
         });
 
         return view;

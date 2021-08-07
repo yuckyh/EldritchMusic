@@ -36,7 +36,6 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         Objects.requireNonNull(getSupportActionBar()).hide();
-
         mNavMenuMain = findViewById(R.id.navMenuMain);
 
         mNavMenuMain.setOnItemSelectedListener(item -> {

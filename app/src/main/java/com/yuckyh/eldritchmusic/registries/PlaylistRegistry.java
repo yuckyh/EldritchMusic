@@ -5,12 +5,11 @@ import com.yuckyh.eldritchmusic.models.Playlist;
 public class PlaylistRegistry extends Registry<Playlist> {
     private static final PlaylistRegistry INSTANCE = new PlaylistRegistry();
 
-    public static PlaylistRegistry getInstance() {
-        return INSTANCE;
+    protected PlaylistRegistry() {
+        super("playlists");
     }
 
-    public PlaylistRegistry syncFromDb() {
-        super.syncFromDb("playlists", Playlist.class);
+    public static PlaylistRegistry getInstance() {
         return INSTANCE;
     }
 

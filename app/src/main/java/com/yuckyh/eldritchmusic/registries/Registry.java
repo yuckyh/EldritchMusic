@@ -7,16 +7,23 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.yuckyh.eldritchmusic.models.Model;
 
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.Objects;
 
 public abstract class Registry<T extends Model> {
+    Class<T> mTypeClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     protected static final String TAG = Registry.class.getSimpleName();
     public final FirebaseFirestore DB = FirebaseFirestore.getInstance();
     protected final ArrayList<T> mList = new ArrayList<>();
     protected OnSyncListener mOnSyncListener;
+    protected String mCollectionPath;
 
-    public T fromId(String id) throws Exception {
+    protected Registry(String collectionPath) {
+        mCollectionPath = collectionPath;
+    }
+
+    public T itemFromId(String id) throws Exception {
         for (T val : this.mList) {
             if (val.getId().equals(id)) {
                 return val;
@@ -25,27 +32,47 @@ public abstract class Registry<T extends Model> {
         throw new Exception("Item with id " + id + " not found");
     }
 
-    public void syncFromDb(String collectionPath, Class<T> tClass) {
-        DB.collection(collectionPath).get().addOnCompleteListener(task -> {
+    public DocumentReference refFromId(String id) {
+        return DB.collection(mCollectionPath).document(id);
+    }
+
+    public void readFromDb() {
+        DB.collection(mCollectionPath).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                    T t;
-                    t = document.toObject(tClass);
+                    T t = document.toObject(mTypeClass);
+                    t.setObjectsFromRefs();
                     addToList(t);
                 }
                 if (mOnSyncListener != null) {
-                    mOnSyncListener.onDataSync();
+                    mOnSyncListener.onDataRead();
                 }
-                Log.d(TAG, "syncFromDb: " + tClass.getSimpleName() + ": " + collectionPath);
+                Log.d(TAG, "readFromDb: " + mTypeClass.getSimpleName() + ": " + mCollectionPath);
             } else {
-                Log.e(TAG, "onComplete: ", task.getException());
+                Log.e(TAG, "readFromDb: ", task.getException());
             }
         });
     }
 
+    public void writeToDb() {
+        for (T t : mList) {
+            t.setRefsFromObjects();
+            DB.collection(mCollectionPath).document(t.getId()).set(t)
+                    .addOnCompleteListener(task -> Log.d(TAG, "writeToDb: " + t.getClass().getSimpleName() + ": " + t.getId()))
+                    .addOnFailureListener(e -> Log.e(TAG, "writeToDb: ", e));
+        }
+    }
+
+    ;
+
     public void addToList(T t) {
         Log.d(TAG, "Item added to list " + t.getId());
         mList.add(t);
+    }
+
+    public void removeToList(T t) {
+        Log.d(TAG, "removeToList: " + t.getId());
+        mList.remove(t);
     }
 
     public ArrayList<T> getList() {
@@ -58,7 +85,7 @@ public abstract class Registry<T extends Model> {
 
     public T refToObject(DocumentReference reference) {
         try {
-            return this.fromId(reference.getId());
+            return this.itemFromId(reference.getId());
         } catch (Exception e) {
             Log.e(TAG, "refToObject: ", e);
             return null;
@@ -67,9 +94,13 @@ public abstract class Registry<T extends Model> {
 
     public ArrayList<T> refListToObjectList(ArrayList<DocumentReference> references) {
         ArrayList<T> tArrayList = new ArrayList<>();
+        if (references == null) {
+            return tArrayList;
+        }
+
         for (DocumentReference id : references) {
             try {
-                tArrayList.add(this.fromId(id.getId()));
+                tArrayList.add(this.itemFromId(id.getId()));
             } catch (Exception e) {
                 Log.e(TAG, "setFollowedArtisteIds: ", e);
             }
@@ -79,6 +110,6 @@ public abstract class Registry<T extends Model> {
     }
 
     public interface OnSyncListener {
-        void onDataSync();
+        void onDataRead();
     }
 }

@@ -5,12 +5,11 @@ import com.yuckyh.eldritchmusic.models.Album;
 public class AlbumRegistry extends Registry<Album> {
     private static final AlbumRegistry INSTANCE = new AlbumRegistry();
 
-    public static AlbumRegistry getInstance() {
-        return INSTANCE;
+    protected AlbumRegistry() {
+        super("albums");
     }
 
-    public AlbumRegistry syncFromDb() {
-        super.syncFromDb("albums", Album.class);
+    public static AlbumRegistry getInstance() {
         return INSTANCE;
     }
 

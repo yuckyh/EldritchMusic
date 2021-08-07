@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.yuckyh.eldritchmusic.fragments.ProfileFragment;
 import com.yuckyh.eldritchmusic.models.User;
 import com.yuckyh.eldritchmusic.registries.UserRegistry;
 
@@ -56,7 +55,7 @@ public class ProfileViewModel extends ViewModel {
 
         if (mUser.getValue() == null || !currentUser.getUid().equals(mUser.getValue().getId())) {
             try {
-                mUser.postValue(UserRegistry.getInstance().fromId(currentUser.getUid()));
+                mUser.postValue(UserRegistry.getInstance().itemFromId(currentUser.getUid()));
             } catch (Exception e) {
                 Log.e(TAG, "loadUser: ", e);
                 createUser();

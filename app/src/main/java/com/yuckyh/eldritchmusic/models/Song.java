@@ -15,7 +15,8 @@ public class Song extends Model {
     private Album mAlbum;
     private DocumentReference mAlbumId;
 
-    public Song() {}
+    public Song() {
+    }
 
     public String getId() {
         return this.mId;
@@ -23,6 +24,16 @@ public class Song extends Model {
 
     public void setId(String id) {
         mId = id;
+    }
+
+    @Override
+    public void setObjectsFromRefs() {
+        setAlbum(AlbumRegistry.getInstance().refToObject(mAlbumId));
+    }
+
+    @Override
+    public void setRefsFromObjects() {
+        mAlbumId.set(mAlbum);
     }
 
     public String getName() {
@@ -41,7 +52,7 @@ public class Song extends Model {
         mDuration = duration;
     }
 
-    public Album getAlbum() {
+    public Album appGetAlbum() {
         return this.mAlbum;
     }
 
@@ -55,11 +66,9 @@ public class Song extends Model {
 
     public void setAlbumId(DocumentReference albumId) {
         mAlbumId = albumId;
-        setAlbum(AlbumRegistry.getInstance().refToObject(albumId));
     }
 
     public void addToAlbum() {
-
         if (mAlbum == null) {
             return;
         }
