@@ -1,5 +1,6 @@
 package com.yuckyh.eldritchmusic.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,15 +12,17 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yuckyh.eldritchmusic.R;
+import com.yuckyh.eldritchmusic.activities.PlaylistActivity;
+import com.yuckyh.eldritchmusic.adapters.PlaylistAdapter;
 import com.yuckyh.eldritchmusic.adapters.SongAdapter;
+import com.yuckyh.eldritchmusic.registries.PlaylistRegistry;
 import com.yuckyh.eldritchmusic.registries.SongRegistry;
 
 public class ExploreFragment extends Fragment {
     private static final String TAG = ExploreFragment.class.getSimpleName();
 
     // Required empty public constructor
-    public ExploreFragment() {
-    }
+//    public ExploreFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,10 +36,19 @@ public class ExploreFragment extends Fragment {
 
         Log.d(TAG, "onCreateView: " + SongRegistry.getInstance().getList());
 
-        RecyclerView rvExplore = view.findViewById(R.id.rvExploreSongs);
+        RecyclerView rvExploreSongs = view.findViewById(R.id.rvExploreSongs);
 
-        rvExplore.setAdapter(new SongAdapter(getContext(), SongRegistry.getInstance().getList(), R.layout.item_song));
-        rvExplore.addItemDecoration(new DividerItemDecoration(rvExplore.getContext(), DividerItemDecoration.VERTICAL));
+        rvExploreSongs.setAdapter(new SongAdapter(getContext(), SongRegistry.getInstance().getList(), R.layout.item_song, 20));
+        rvExploreSongs.addItemDecoration(new DividerItemDecoration(rvExploreSongs.getContext(), DividerItemDecoration.VERTICAL));
+
+        RecyclerView rvExplorePlaylists = view.findViewById(R.id.rvExplorePlaylists);
+
+        rvExplorePlaylists.setAdapter(new PlaylistAdapter(getContext(),
+                PlaylistRegistry.getInstance().getList(),
+                R.layout.item_playlist_square,
+                5,
+                itemId -> startActivity(new Intent(getContext(), PlaylistActivity.class)
+                        .putExtra("id", itemId))));
 
         return view;
     }

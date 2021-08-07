@@ -15,9 +15,6 @@ import android.widget.TextView;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,16 +23,13 @@ import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
 import com.firebase.ui.auth.IdpResponse;
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.yuckyh.eldritchmusic.R;
 import com.yuckyh.eldritchmusic.activities.PlaylistActivity;
 import com.yuckyh.eldritchmusic.adapters.ArtisteAdapter;
 import com.yuckyh.eldritchmusic.adapters.PlaylistAdapter;
-import com.yuckyh.eldritchmusic.models.User;
-import com.yuckyh.eldritchmusic.registries.UserRegistry;
-import com.yuckyh.eldritchmusic.utils.BitmapUtil;
+import com.yuckyh.eldritchmusic.utils.ImageUtil;
+import com.yuckyh.eldritchmusic.utils.SpaceItemDecoration;
+import com.yuckyh.eldritchmusic.viewmodels.ProfileViewModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -124,16 +118,17 @@ public class ProfileFragment extends Fragment {
             }
             mTxtViewUsername.setText(currentUser.getDisplayName());
             if (currentUser.getPhotoUrl() != null) {
-                BitmapUtil util = new BitmapUtil();
+                ImageUtil util = new ImageUtil(getContext());
                 util.downloadImageBitmap(currentUser.getPhotoUrl().toString(),
                         () -> mImgViewPfp.setImageBitmap(util.getBitmap()));
             }
             if (mModel.getUser() == null) {
-                mModel.loadUser();
+                mModel.reload();
             }
         });
 
         mModel.getUser().observeForever(user -> {
+            mRvProfileArtistes.addItemDecoration(new SpaceItemDecoration((int) getResources().getDimension(R.dimen.vertical_item_space), 0));
             if (user == null) {
                 mModel.reload();
 
@@ -145,7 +140,7 @@ public class ProfileFragment extends Fragment {
                 PlaylistAdapter playlistAdapter = new PlaylistAdapter(getContext(),
                         new ArrayList<>(),
                         R.layout.item_playlist_card,
-                        itemId -> {});
+                        0, itemId -> {});
                 mRvProfilePlaylists.setAdapter(playlistAdapter);
                 mRvProfileArtistes.setAdapter(new ArtisteAdapter(getContext(), new ArrayList<>()));
                 return;
@@ -173,10 +168,9 @@ public class ProfileFragment extends Fragment {
             mRvProfilePlaylists.setAdapter(new PlaylistAdapter(getContext(),
                     user.getCreatedPlaylists(),
                     R.layout.item_playlist_card,
-                    itemId -> {
-                        startActivity(new Intent(getContext(), PlaylistActivity.class)
-                                .putExtra("id", itemId));
-                    }));
+                    -1,
+                    itemId -> startActivity(new Intent(getContext(), PlaylistActivity.class)
+                            .putExtra("id", itemId))));
             mRvProfileArtistes.setAdapter(new ArtisteAdapter(getContext(), user.getFollowedArtistes()));
         });
 
@@ -211,78 +205,5 @@ public class ProfileFragment extends Fragment {
 
     public interface AuthListener {
         void onLogout();
-    }
-
-    public static class ProfileViewModel extends ViewModel {
-        private static final String TAG = ProfileViewModel.class.getSimpleName();
-        private final MutableLiveData<FirebaseUser> mCurrentUser = new MutableLiveData<>();
-        private final MutableLiveData<User> mUser = new MutableLiveData<>();
-
-        public ProfileViewModel() {
-            reload();
-        }
-
-        public LiveData<User> getUser() {
-            if (mUser.getValue() == null) {
-                try {
-                    loadUser();
-                } catch (Exception e) {
-                    Log.e(TAG, "getUser: ", e);
-                    return null;
-                }
-            }
-
-            return mUser;
-        }
-
-        public LiveData<FirebaseUser> getCurrentUser() {
-            return mCurrentUser;
-        }
-
-        private void reload() {
-            FirebaseAuth auth = FirebaseAuth.getInstance();
-            if (mCurrentUser.getValue() != auth.getCurrentUser()) {
-                mCurrentUser.postValue(auth.getCurrentUser());
-            }
-            loadUser();
-        }
-
-        private void loadUser() {
-            FirebaseUser currentUser = mCurrentUser.getValue();
-            if (currentUser == null) {
-                mUser.postValue(null);
-                return;
-            }
-
-            if (mUser.getValue() == null || !currentUser.getUid().equals(mUser.getValue().getId())) {
-                try {
-                    mUser.postValue(UserRegistry.getInstance().fromId(currentUser.getUid()));
-                } catch (Exception e) {
-                    Log.e(TAG, "loadUser: ", e);
-                    createUser();
-                }
-            }
-        }
-
-        private void createUser() {
-            FirebaseUser currentUser = mCurrentUser.getValue();
-
-            if (currentUser == null) {
-                mUser.postValue(null);
-                return;
-            }
-
-            Log.d(TAG, "onSignInResult: pls download");
-
-            FirebaseFirestore.getInstance()
-                    .collection("users")
-                    .document(currentUser.getUid())
-                    .set(new User(currentUser.getUid(), currentUser.getDisplayName()))
-                    .addOnSuccessListener(unused -> {
-                        Log.d(TAG, "onSuccess: " + currentUser.getUid() + " added");
-                        loadUser();
-                    })
-                    .addOnFailureListener(e -> Log.e(TAG, "onFailure: ", e));
-        }
     }
 }

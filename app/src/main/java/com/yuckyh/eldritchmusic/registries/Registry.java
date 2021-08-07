@@ -36,7 +36,7 @@ public abstract class Registry<T extends Model> {
                 if (mOnSyncListener != null) {
                     mOnSyncListener.onDataSync();
                 }
-                Log.d(TAG, "syncFromDb: " + collectionPath);
+                Log.d(TAG, "syncFromDb: " + tClass.getSimpleName() + ": " + collectionPath);
             } else {
                 Log.e(TAG, "onComplete: ", task.getException());
             }

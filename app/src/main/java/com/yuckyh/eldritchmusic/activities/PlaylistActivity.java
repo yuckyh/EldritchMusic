@@ -3,11 +3,9 @@ package com.yuckyh.eldritchmusic.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,7 +17,8 @@ import com.yuckyh.eldritchmusic.models.Playlist;
 import com.yuckyh.eldritchmusic.models.User;
 import com.yuckyh.eldritchmusic.registries.PlaylistRegistry;
 import com.yuckyh.eldritchmusic.registries.UserRegistry;
-import com.yuckyh.eldritchmusic.utils.BitmapUtil;
+import com.yuckyh.eldritchmusic.utils.ImageUtil;
+import com.yuckyh.eldritchmusic.utils.SpaceItemDecoration;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -41,13 +40,21 @@ public class PlaylistActivity extends AppCompatActivity {
             ((TextView)findViewById(R.id.txtViewPlaylistOwner))
                     .setText(playlist.getOwner().getName());
 
-            BitmapUtil bitmapUtil = new BitmapUtil();
-            bitmapUtil.downloadImageBitmap(playlist.getPlaylistArtUrl(),
-                    () -> ((ImageView)findViewById(R.id.imgViewPlaylistPic))
-                            .setImageBitmap(bitmapUtil.getBitmap()));
+            ImageView imgPlaylistBg = findViewById(R.id.imgViewPlaylistBg);
 
-            SongAdapter songAdapter = new SongAdapter(this, playlist.getSongs(), R.layout.item_song_card);
-            ((RecyclerView)findViewById(R.id.rvPlaylistSongs)).setAdapter(songAdapter);
+            ImageUtil imageUtil = new ImageUtil(this);
+            imageUtil.downloadImageBitmap(playlist.getPlaylistArtUrl(),
+                    () -> {
+                        ((ImageView)findViewById(R.id.imgViewPlaylistPic))
+                                .setImageBitmap(imageUtil.getBitmap());
+                        imgPlaylistBg.setImageBitmap(imageUtil.blur(.4f, 10f));
+                        imageUtil.setAlpha(this, imgPlaylistBg);
+                    });
+
+            SongAdapter songAdapter = new SongAdapter(this, playlist.getSongs(), R.layout.item_song_card, -1);
+            RecyclerView rvPlaylistSongs = findViewById(R.id.rvPlaylistSongs);
+            rvPlaylistSongs.setAdapter(songAdapter);
+            rvPlaylistSongs.addItemDecoration(new SpaceItemDecoration((int) getResources().getDimension(R.dimen.vertical_item_space), 0));
 
             findViewById(R.id.btnShuffle).setOnClickListener(
                     v -> songAdapter.openSongPlayer(0, false, true));
@@ -58,8 +65,8 @@ public class PlaylistActivity extends AppCompatActivity {
 
             if (FirebaseAuth.getInstance().getCurrentUser() != null) {
                 String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                if (playlist.getId().equals(userId)) {
-
+                if (playlist.getOwner().getId().equals(userId)) {
+                    Log.d(TAG, "onCreate: is owner");
                 } else {
                     User user = UserRegistry.getInstance().fromId(userId);
                     FloatingActionButton fabFollowPlaylist = findViewById(R.id.fabFollowPlaylist);
@@ -67,11 +74,13 @@ public class PlaylistActivity extends AppCompatActivity {
                         fabFollowPlaylist.setVisibility(View.GONE);
                         return;
                     }
-                    ArrayList<Playlist> playlists = user.getFollowedPlaylists();
+                    ArrayList<Playlist> playlists = new ArrayList<>();
 
-                    if (playlists == null) {
-                        return;
+                    if (user.getFollowedPlaylists() != null) {
+                        playlists.addAll(user.getFollowedPlaylists());
                     }
+
+                    Log.d(TAG, "onCreate: " + playlists.toString());
 
                     fabFollowPlaylist.setActivated(playlists.contains(playlist));
                     fabFollowPlaylist.setOnClickListener(v -> {
@@ -80,6 +89,7 @@ public class PlaylistActivity extends AppCompatActivity {
                         } else {
                             playlists.add(playlist);
                         }
+                        user.setFollowedPlaylists(playlists);
 
                         v.setActivated(playlists.contains(playlist));
                     });

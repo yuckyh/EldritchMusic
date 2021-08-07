@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import com.yuckyh.eldritchmusic.R;
 
-public class CreatePlaylist extends AppCompatActivity {
+public class CreatePlaylistActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

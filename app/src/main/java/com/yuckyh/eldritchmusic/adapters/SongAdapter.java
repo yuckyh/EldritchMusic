@@ -15,10 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
 import com.yuckyh.eldritchmusic.R;
-import com.yuckyh.eldritchmusic.activities.HomeActivity;
 import com.yuckyh.eldritchmusic.activities.SongPlayerActivity;
 import com.yuckyh.eldritchmusic.models.Song;
-import com.yuckyh.eldritchmusic.utils.BitmapUtil;
+import com.yuckyh.eldritchmusic.utils.ImageUtil;
 import com.yuckyh.eldritchmusic.utils.Duration;
 
 import org.jetbrains.annotations.NotNull;
@@ -30,12 +29,13 @@ import java.util.TreeSet;
 public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
     private final Context mContext;
     private final ArrayList<Song> mSongs;
-    private final int mLayoutId;
+    private final int mLayoutId, mMaxItem;
 
-    public SongAdapter(Context context, ArrayList<Song> songs, int layoutId) {
+    public SongAdapter(Context context, ArrayList<Song> songs, int layoutId, int maxItem) {
         mContext = context;
         mSongs = songs;
         mLayoutId = layoutId;
+        mMaxItem = maxItem;
     }
 
     @NonNull
@@ -52,17 +52,11 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
         holder.mTxtViewSongItemTitle.setText(song.getName());
         holder.mTxtViewSongItemDuration.setText(Duration.minutesToTimer(song.getDuration()));
         holder.mTxtViewSongItemArtiste.setText(song.getAlbum().getArtiste().getName());
-        BitmapUtil util = new BitmapUtil();
+        ImageUtil util = new ImageUtil(mContext);
         util.downloadImageBitmap(song.getAlbum().getAlbumArtUrl(),
                 () -> holder.mImgViewSongItemAlbumArt.setImageBitmap(util.getBitmap()));
 
         holder.itemView.setOnClickListener(v -> openSongPlayer(position, false, false));
-
-        if (holder.mMcvSongItem == null) {
-            return;
-        }
-
-        holder.mMcvSongItem.setOnClickListener(v -> openSongPlayer(position, false, false));
     }
 
     public void openSongPlayer(int position, boolean isShuffling, boolean isReset) {
@@ -92,13 +86,15 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return mSongs.size();
+        if (mMaxItem < 0) {
+            return mSongs.size();
+        }
+        return Math.min(mSongs.size(), mMaxItem);
     }
 
     protected static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView mTxtViewSongItemTitle, mTxtViewSongItemDuration, mTxtViewSongItemArtiste;
         private final ImageView mImgViewSongItemAlbumArt;
-        private final MaterialCardView mMcvSongItem;
 
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
@@ -106,7 +102,6 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
             mTxtViewSongItemTitle = itemView.findViewById(R.id.txtViewSongItemTitle);
             mTxtViewSongItemArtiste = itemView.findViewById(R.id.txtViewSongItemArtiste);
             mTxtViewSongItemDuration = itemView.findViewById(R.id.txtViewSongItemDuration);
-            mMcvSongItem = itemView.findViewById(R.id.mcvSongItem);
         }
     }
 }

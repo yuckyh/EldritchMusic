@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.yuckyh.eldritchmusic.R;
 import com.yuckyh.eldritchmusic.models.Artiste;
-import com.yuckyh.eldritchmusic.utils.BitmapUtil;
+import com.yuckyh.eldritchmusic.utils.ImageUtil;
 
 import java.util.ArrayList;
 
@@ -37,7 +37,7 @@ public class ArtisteAdapter extends RecyclerView.Adapter<ArtisteAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Artiste artiste = mArtistes.get(position);
 
-        BitmapUtil util = new BitmapUtil();
+        ImageUtil util = new ImageUtil(mContext);
         Log.d("AAA", "onBindViewHolder: " + artiste.getProfileUrl());
         util.downloadImageBitmap(artiste.getProfileUrl(),
                 () -> holder.mImgViewArtisteItemPic.setImageBitmap(util.getBitmap()));

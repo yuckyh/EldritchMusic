@@ -82,4 +82,8 @@ public class Album extends Model {
     public void addToArtiste() {
         mArtiste.addAlbum(this);
     }
+
+    public ArrayList<Song> getSongs() {
+        return mSongs;
+    }
 }

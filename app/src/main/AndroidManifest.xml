@@ -13,10 +13,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EldritchMusic">
         <activity
+            android:name=".activities.EditPlaylistActivity"
+            android:exported="true" />
+        <activity
             android:name=".activities.AddToPlaylistActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.CreatePlaylist"
+            android:name=".activities.CreatePlaylistActivity"
             android:exported="true" />
         <activity
             android:name=".activities.PlaylistActivity"

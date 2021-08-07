@@ -2,16 +2,10 @@ package com.yuckyh.eldritchmusic.activities;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.opengl.Visibility;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
-import android.view.DragEvent;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -21,7 +15,6 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.palette.graphics.Palette;
 
@@ -30,7 +23,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.yuckyh.eldritchmusic.R;
 import com.yuckyh.eldritchmusic.models.Song;
 import com.yuckyh.eldritchmusic.utils.ColorUtil;
-import com.yuckyh.eldritchmusic.utils.BitmapUtil;
+import com.yuckyh.eldritchmusic.utils.ImageUtil;
 import com.yuckyh.eldritchmusic.utils.MusicPlayer;
 import com.yuckyh.eldritchmusic.utils.Duration;
 
@@ -199,32 +192,15 @@ public class SongPlayerActivity extends AppCompatActivity {
     }
 
     private void downloadAlbumArt(Song song) {
-        BitmapUtil util = new BitmapUtil();
+        ImageUtil util = new ImageUtil(this);
         util.downloadImageBitmap(song.getAlbum().getAlbumArtUrl(),
                 () -> {
-                    Bitmap bitmap = util.getBitmap();
-                    mImgViewAlbumArt.setImageBitmap(bitmap);
+                    mImgViewAlbumArt.setImageBitmap(util.getBitmap());
 
-                    Bitmap blurredBg = BitmapUtil.blur(getBaseContext(), bitmap, .4f, 10f);
+                    Bitmap blurredBg = util.blur(.4f, 10f);
                     mImgViewSongPlayerBg.setImageBitmap(blurredBg);
 
-                    Palette palette = Palette.from(bitmap).generate();
-                    @ColorInt int color;
-
-                    int nightModeFlags = getResources().getConfiguration().uiMode &
-                            Configuration.UI_MODE_NIGHT_MASK;
-
-                    if (nightModeFlags == Configuration.UI_MODE_NIGHT_NO) {
-                        color = palette.getLightVibrantColor(ColorUtil.getColorFromAttr(getTheme(), Color.WHITE));
-
-                        double luminance = ColorUtil.getLuminance(color);
-                        mImgViewSongPlayerBg.setAlpha((float) (luminance));
-                    } else {
-                        color = palette.getDarkVibrantColor(ColorUtil.getColorFromAttr(getTheme(), Color.WHITE));
-
-                        double luminance = ColorUtil.getLuminance(color);
-                        mImgViewSongPlayerBg.setAlpha((float) (1 - luminance));
-                    }
+                    util.setAlpha(this, mImgViewSongPlayerBg);
 
                     Log.d(TAG, "onCreate: image downloaded");
                 });

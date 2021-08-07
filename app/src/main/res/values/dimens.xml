@@ -3,4 +3,6 @@
     <dimen name="design_bottom_navigation_item_max_width" tools:override="true">600dp</dimen>
     <dimen name="design_bottom_navigation_active_item_max_width" tools:override="true">600dp</dimen>
     <dimen name="text_margin">16dp</dimen>
+    <dimen name="vertical_item_space">8dp</dimen>
+    <dimen name="horizontal_item_space">16dp</dimen>
 </resources>
