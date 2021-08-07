@@ -18,7 +18,6 @@ import com.yuckyh.eldritchmusic.models.User;
 import com.yuckyh.eldritchmusic.registries.AlbumRegistry;
 import com.yuckyh.eldritchmusic.registries.UserRegistry;
 import com.yuckyh.eldritchmusic.utils.ImageUtil;
-import com.yuckyh.eldritchmusic.utils.SpaceItemDecoration;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -55,7 +54,6 @@ public class AlbumActivity extends AppCompatActivity {
 
             SongAdapter songAdapter = new SongAdapter(this, album.getSongs(), R.layout.item_song_card, -1);
             rvPlaylistSongs.setAdapter(songAdapter);
-            rvPlaylistSongs.addItemDecoration(new SpaceItemDecoration((int) getResources().getDimension(R.dimen.vertical_item_space), 0));
 
             findViewById(R.id.btnShuffle).setOnClickListener(
                     v -> songAdapter.openSongPlayer(0, false, true));

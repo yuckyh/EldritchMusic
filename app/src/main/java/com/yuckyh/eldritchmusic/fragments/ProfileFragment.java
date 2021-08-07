@@ -28,7 +28,6 @@ import com.yuckyh.eldritchmusic.activities.PlaylistActivity;
 import com.yuckyh.eldritchmusic.adapters.ArtisteAdapter;
 import com.yuckyh.eldritchmusic.adapters.PlaylistAdapter;
 import com.yuckyh.eldritchmusic.utils.ImageUtil;
-import com.yuckyh.eldritchmusic.utils.SpaceItemDecoration;
 import com.yuckyh.eldritchmusic.viewmodels.ProfileViewModel;
 
 import java.util.ArrayList;
@@ -128,7 +127,6 @@ public class ProfileFragment extends Fragment {
         });
 
         mModel.getUser().observeForever(user -> {
-            mRvProfileArtistes.addItemDecoration(new SpaceItemDecoration((int) getResources().getDimension(R.dimen.vertical_item_space), 0));
             if (user == null) {
                 mModel.reload();
 

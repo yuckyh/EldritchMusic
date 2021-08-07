@@ -45,7 +45,7 @@ public class ExploreFragment extends Fragment {
 
         rvExplorePlaylists.setAdapter(new PlaylistAdapter(getContext(),
                 PlaylistRegistry.getInstance().getList(),
-                R.layout.item_playlist_square,
+                R.layout.item_playlist_card_square,
                 5,
                 itemId -> startActivity(new Intent(getContext(), PlaylistActivity.class)
                         .putExtra("id", itemId))));

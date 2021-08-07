@@ -17,6 +17,7 @@
         <entry key="app/src/main/res/layout/activity_artiste.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_auth.xml" value="0.1980263157894737" />
         <entry key="app/src/main/res/layout/activity_create_playlist.xml" value="0.1457236842105263" />
+        <entry key="app/src/main/res/layout/activity_edit_playlist.xml" value="0.16578947368421051" />
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_playlist.xml" value="0.1980263157894737" />
         <entry key="app/src/main/res/layout/activity_song_player.xml" value="0.1534054742202419" />
