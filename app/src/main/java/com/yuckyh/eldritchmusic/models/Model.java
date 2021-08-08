@@ -1,27 +1,26 @@
 package com.yuckyh.eldritchmusic.models;
 
+import android.util.Log;
+
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
 public abstract class Model {
     protected static final String TAG = Model.class.getSimpleName();
+    protected final FirebaseFirestore DB = FirebaseFirestore.getInstance();
+    protected final String mCollectionPath;
 
-    public Model() {
+    public Model(String collectionPath) {
+        mCollectionPath = collectionPath;
     }
 
     public abstract String getId();
 
     public abstract void setId(String id);
 
-    public abstract void setObjectsFromRefs();
+    public abstract void appSetObjectsFromRefs();
 
-    public abstract void setRefsFromObjects();
-
-    protected <T> void setRefArrayToObjArray(ArrayList<DocumentReference> references, ArrayList<T> tArrayList) {
-        for (int i = 0; i < tArrayList.size(); i++) {
-            DocumentReference reference = references.get(i);
-            reference.set(tArrayList.get(i));
-        }
-    }
+    public abstract void appSetRefsFromObjects();
 }

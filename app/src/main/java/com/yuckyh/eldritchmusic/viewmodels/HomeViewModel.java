@@ -6,18 +6,37 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.yuckyh.eldritchmusic.models.Playlist;
+import com.yuckyh.eldritchmusic.models.Song;
 import com.yuckyh.eldritchmusic.models.User;
+import com.yuckyh.eldritchmusic.registries.PlaylistRegistry;
+import com.yuckyh.eldritchmusic.registries.SongRegistry;
 import com.yuckyh.eldritchmusic.registries.UserRegistry;
 
-public class ProfileViewModel extends ViewModel {
-    private static final String TAG = ProfileViewModel.class.getSimpleName();
+import java.util.ArrayList;
+
+public class HomeViewModel extends ViewModel {
+    private static final String TAG = HomeViewModel.class.getSimpleName();
+    private static HomeViewModel mInstance = new HomeViewModel();
     private final MutableLiveData<FirebaseUser> mCurrentUser = new MutableLiveData<>();
     private final MutableLiveData<User> mUser = new MutableLiveData<>();
+    private final MutableLiveData<ArrayList<Playlist>> mPlaylists = new MutableLiveData<>();
+    private final MutableLiveData<ArrayList<Song>> mSongs = new MutableLiveData<>();
 
-    public ProfileViewModel() {
+    public static HomeViewModel getInstance() {
+        return mInstance;
+    }
+
+    public static void setInstance(HomeViewModel instance) {
+        mInstance = instance;
+    }
+
+    public HomeViewModel() {
         reload();
     }
 
@@ -38,11 +57,20 @@ public class ProfileViewModel extends ViewModel {
         return mCurrentUser;
     }
 
+    public LiveData<ArrayList<Playlist>> getPlaylists() {
+        return mPlaylists;
+    }
+
+    public LiveData<ArrayList<Song>> getSongs() {
+        return mSongs;
+    }
+
     public void reload() {
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        if (mCurrentUser.getValue() != auth.getCurrentUser()) {
-            mCurrentUser.postValue(auth.getCurrentUser());
+        if (mCurrentUser.getValue() != FirebaseAuth.getInstance().getCurrentUser()) {
+            mCurrentUser.postValue(FirebaseAuth.getInstance().getCurrentUser());
         }
+        mPlaylists.postValue(PlaylistRegistry.getInstance().getList());
+        mSongs.postValue(SongRegistry.getInstance().getList());
         loadUser();
     }
 
@@ -65,7 +93,6 @@ public class ProfileViewModel extends ViewModel {
 
     private void createUser() {
         FirebaseUser currentUser = mCurrentUser.getValue();
-
         if (currentUser == null) {
             mUser.postValue(null);
             return;
@@ -82,5 +109,6 @@ public class ProfileViewModel extends ViewModel {
                     loadUser();
                 })
                 .addOnFailureListener(e -> Log.e(TAG, "onFailure: ", e));
+
     }
 }

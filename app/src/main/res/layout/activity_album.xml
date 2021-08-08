@@ -33,7 +33,7 @@
             tools:context=".activities.PlaylistActivity">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvPlaylistSongs"
+                android:id="@+id/rvAlbumSongs"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -45,31 +45,43 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btnPlay"
-                tools:listitem="@layout/item_song_card" />
+                app:layout_constraintTop_toBottomOf="@+id/btnArtiste"
+                tools:listitem="@layout/item_song_card_simple" />
 
             <Button
                 android:id="@+id/btnPlay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
                 android:text="Play"
                 app:icon="@drawable/ic_round_play_arrow_24"
-                app:layout_constraintEnd_toEndOf="@+id/txtViewPlaylistOwner"
-                app:layout_constraintHorizontal_bias="0.507"
+                app:layout_constraintEnd_toEndOf="@+id/materialCardView6"
+                app:layout_constraintHorizontal_bias="0.4"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtViewPlaylistOwner" />
+                app:layout_constraintTop_toBottomOf="@+id/txtViewAlbumArtiste" />
 
             <Button
                 android:id="@+id/btnShuffle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="32dp"
                 android:text="Shuffle"
                 app:icon="@drawable/ic_round_shuffle_24"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/txtViewPlaylistOwner"
-                app:layout_constraintTop_toBottomOf="@+id/txtViewPlaylistOwner" />
+                app:layout_constraintHorizontal_bias="0.6"
+                app:layout_constraintStart_toStartOf="@+id/materialCardView6"
+                app:layout_constraintTop_toBottomOf="@+id/txtViewAlbumArtiste" />
+
+            <Button
+                android:id="@+id/btnArtiste"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Go to Artiste"
+                app:icon="@drawable/ic_round_person_24"
+                app:layout_constraintEnd_toEndOf="@+id/materialCardView6"
+                app:layout_constraintStart_toStartOf="@+id/materialCardView6"
+                app:layout_constraintTop_toBottomOf="@+id/btnShuffle" />
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/materialCardView6"
@@ -85,7 +97,7 @@
                     android:layout_height="match_parent">
 
                     <ImageView
-                        android:id="@+id/imgViewPlaylistPic"
+                        android:id="@+id/imgViewAlbumPic"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:contentDescription="Playlist Picture"
@@ -96,7 +108,7 @@
                         tools:srcCompat="@tools:sample/avatars" />
 
                     <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:id="@+id/fabFollowPlaylist"
+                        android:id="@+id/fabFollowAlbum"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
@@ -112,18 +124,7 @@
             </com.google.android.material.card.MaterialCardView>
 
             <TextView
-                android:id="@+id/txtViewPlaylistOwner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="username"
-                android:textAppearance="@style/TextAppearance.EldritchMusic.Body2"
-                android:textColor="?attr/colorOnBackground"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtViewPlaylistName" />
-
-            <TextView
-                android:id="@+id/txtViewPlaylistName"
+                android:id="@+id/txtViewAlbumName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -133,6 +134,17 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/materialCardView6" />
+
+            <TextView
+                android:id="@+id/txtViewAlbumArtiste"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="username"
+                android:textAppearance="@style/TextAppearance.EldritchMusic.Body2"
+                android:textColor="?attr/colorOnBackground"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtViewAlbumName" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

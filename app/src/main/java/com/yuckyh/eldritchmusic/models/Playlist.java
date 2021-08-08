@@ -1,6 +1,10 @@
 package com.yuckyh.eldritchmusic.models;
 
+import android.util.Log;
+
 import com.google.firebase.firestore.DocumentReference;
+import com.yuckyh.eldritchmusic.registries.PlaylistRegistry;
+import com.yuckyh.eldritchmusic.registries.Registry;
 import com.yuckyh.eldritchmusic.registries.SongRegistry;
 import com.yuckyh.eldritchmusic.registries.UserRegistry;
 
@@ -15,7 +19,28 @@ public class Playlist extends Model {
     private double mSongsTotalDuration;
 
     public Playlist() {
-        super();
+        super("playlists");
+    }
+
+    public Playlist(String id, String name, User user, String songId) {
+        this();
+        mId = id;
+        mName = name;
+        mOwner = user;
+        mOwnerId = DB.collection(mCollectionPath).document(mOwner.getId());
+
+        if (songId == null) {
+            return;
+        }
+
+        ArrayList<Song> songs = new ArrayList<>();
+        try {
+            Song song = SongRegistry.getInstance().itemFromId(songId);
+            songs.add(song);
+        } catch (Exception e) {
+            Log.e(TAG, "Playlist: ", e);
+        }
+        setSongs(songs);
     }
 
     public String getId() {
@@ -27,14 +52,14 @@ public class Playlist extends Model {
     }
 
     @Override
-    public void setObjectsFromRefs() {
+    public void appSetObjectsFromRefs() {
         setSongs(SongRegistry.getInstance().refListToObjectList(mSongIds));
     }
 
     @Override
-    public void setRefsFromObjects() {
-        mOwnerId.set(mOwner);
-        setRefArrayToObjArray(mSongIds, mSongs);
+    public void appSetRefsFromObjects() {
+        setOwner(UserRegistry.getInstance().refToObject(mOwnerId));
+        setSongIds(SongRegistry.getInstance().objectListToRefList(mSongs));
     }
 
     public User appGetOwner() {
@@ -60,9 +85,13 @@ public class Playlist extends Model {
     public void setSongs(ArrayList<Song> songs) {
         mSongs = songs;
         mSongsTotalDuration = 0;
-        mPlaylistArtUrl = mSongs.get(0).appGetAlbum().getAlbumArtUrl();
-        for (Song song: mSongs) {
+        for (Song song : mSongs) {
             mSongsTotalDuration += song.getDuration();
+        }
+        try {
+            mPlaylistArtUrl = mSongs.get(0).appGetAlbum().getAlbumArtUrl();
+        } catch (Exception e) {
+            Log.e(TAG, "setSongs: ", e);
         }
     }
 
@@ -85,6 +114,10 @@ public class Playlist extends Model {
     public void addToOwner() {
         setOwner(UserRegistry.getInstance().refToObject(mOwnerId));
         mOwner.addPlaylist(this);
+    }
+
+    public void addSong(Song song) {
+        mSongs.add(song);
     }
 
     public double appGetSongsTotalDuration() {

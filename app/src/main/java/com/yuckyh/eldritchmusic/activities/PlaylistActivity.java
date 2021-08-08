@@ -1,18 +1,21 @@
 package com.yuckyh.eldritchmusic.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
-
+import android.app.Activity;
+import android.app.ActivityOptions;
+import android.content.Intent;
 import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.yuckyh.eldritchmusic.R;
 import com.yuckyh.eldritchmusic.adapters.SongAdapter;
 import com.yuckyh.eldritchmusic.models.Playlist;
@@ -22,6 +25,7 @@ import com.yuckyh.eldritchmusic.registries.UserRegistry;
 import com.yuckyh.eldritchmusic.utils.ImageUtil;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Random;
 
 public class PlaylistActivity extends AppCompatActivity {
@@ -31,11 +35,11 @@ public class PlaylistActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playlist);
+        Objects.requireNonNull(getSupportActionBar()).hide();
         Playlist playlist;
         try {
             playlist = PlaylistRegistry.getInstance().itemFromId(getIntent().getStringExtra("id"));
 
-            setTitle(playlist.getName());
             ((TextView) findViewById(R.id.txtViewPlaylistName))
                     .setText(playlist.getName());
             ((TextView) findViewById(R.id.txtViewPlaylistOwner))
@@ -63,44 +67,47 @@ public class PlaylistActivity extends AppCompatActivity {
             findViewById(R.id.btnShuffle).setOnClickListener(
                     v -> songAdapter.openSongPlayer(randomPosition, true, true));
 
+            FloatingActionButton fabFollowPlaylist = findViewById(R.id.fabFollowPlaylist);
+
             if (FirebaseAuth.getInstance().getCurrentUser() != null) {
                 String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                FloatingActionButton fabFollowPlaylist = findViewById(R.id.fabFollowPlaylist);
                 if (playlist.appGetOwner().getId().equals(userId)) {
                     fabFollowPlaylist.setImageIcon(Icon.createWithResource(this, R.drawable.ic_round_edit_24));
                     fabFollowPlaylist.setOnClickListener(v -> {
-                        Log.d(TAG, "onCreate: is owner");
-                        PlaylistRegistry.getInstance().writeToDb();
+                        Intent editPlaylistIntent = new Intent(this, EditPlaylistActivity.class).putExtra("id", playlist.getId());
+                        startActivity(editPlaylistIntent, ActivityOptions.makeSceneTransitionAnimation(this,
+                                Pair.create(rvPlaylistSongs, "rvPlaylistSongs"),
+                                Pair.create(fabFollowPlaylist, "fabFollowPlaylist")).toBundle());
                     });
                 } else {
                     User user = UserRegistry.getInstance().itemFromId(userId);
                     if (user == null) {
-                        fabFollowPlaylist.setVisibility(View.GONE);
+                        fabFollowPlaylist.setEnabled(false);
                         return;
                     }
-                    ArrayList<DocumentReference> playlistIds = new ArrayList<>();
+                    ArrayList<Playlist> playlists = new ArrayList<>();
 
                     if (user.appGetFollowedPlaylists() != null) {
-                        playlistIds.addAll(user.getFollowedPlaylistIds());
+                        playlists.addAll(user.appGetFollowedPlaylists());
                     }
 
-                    Log.d(TAG, "onCreate: " + playlistIds.toString());
+                    Log.d(TAG, "onCreate: " + playlists.toString());
 
-                    DocumentReference playlistId = PlaylistRegistry.getInstance().refFromId(playlist.getId());
-
-                    fabFollowPlaylist.setActivated(playlistIds.contains(playlistId));
+                    fabFollowPlaylist.setActivated(playlists.contains(playlist));
                     fabFollowPlaylist.setOnClickListener(v -> {
-                        if (playlistIds.contains(playlistId)) {
-                            playlistIds.remove(playlistId);
+                        if (playlists.contains(playlist)) {
+                            playlists.remove(playlist);
                         } else {
-                            playlistIds.add(playlistId);
+                            playlists.add(playlist);
                         }
-                        user.setFollowedPlaylistIds(playlistIds);
+                        user.setFollowedPlaylists(playlists);
                         UserRegistry.getInstance().writeToDb();
 
-                        v.setActivated(playlistIds.contains(playlistId));
+                        v.setActivated(playlists.contains(playlist));
                     });
                 }
+            } else {
+                fabFollowPlaylist.setEnabled(false);
             }
         } catch (Exception e) {
             Log.e(TAG, "onCreate: ", e);

@@ -9,13 +9,14 @@ import java.util.ArrayList;
 public class Album extends Model {
     private String mId, mName, mAlbumArtUrl;
     private int mYear;
+    private double mSongsTotalDuration;
     private AlbumTypeEnum mType;
     private DocumentReference mArtisteId;
     private Artiste mArtiste;
     private final ArrayList<Song> mSongs = new ArrayList<>();
 
     public Album() {
-        super();
+        super("albums");
     }
 
     public String getId() {
@@ -27,12 +28,12 @@ public class Album extends Model {
     }
 
     @Override
-    public void setObjectsFromRefs() {
+    public void appSetObjectsFromRefs() {
         setArtiste(ArtisteRegistry.getInstance().refToObject(mArtisteId));
     }
 
     @Override
-    public void setRefsFromObjects() {
+    public void appSetRefsFromObjects() {
         mArtisteId.set(mArtiste);
     }
 
@@ -86,16 +87,21 @@ public class Album extends Model {
 
     public void addSong(Song song) {
         mSongs.add(song);
+        mSongsTotalDuration = 0;
+        for (Song song1 : mSongs) {
+            mSongsTotalDuration += song1.getDuration();
+        }
     }
 
     public void addToArtiste() {
-        if (mArtiste == null) {
-            return;
-        }
         mArtiste.addAlbum(this);
     }
 
     public ArrayList<Song> appGetSongs() {
         return mSongs;
+    }
+
+    public double appGetSongsTotalDuration() {
+        return mSongsTotalDuration;
     }
 }

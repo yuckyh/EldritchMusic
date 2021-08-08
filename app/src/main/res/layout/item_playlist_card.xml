@@ -40,7 +40,7 @@
             android:textAppearance="@style/TextAppearance.EldritchMusic.Caption"
             app:firstBaselineToTopHeight="20dp"
             app:layout_constraintStart_toEndOf="@+id/imgViewPlaylistItemPic"
-            app:layout_constraintTop_toBottomOf="@+id/txtViewPlaylistItemName" />
+            app:layout_constraintTop_toBottomOf="@+id/txtViewSongTitle" />
 
         <TextView
             android:id="@+id/txtViewPlaylistItemDuration"
@@ -54,7 +54,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/txtViewPlaylistItemName"
+            android:id="@+id/txtViewSongTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"

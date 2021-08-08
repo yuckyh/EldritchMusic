@@ -19,23 +19,23 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/txtViewSongTitle"
+            android:id="@+id/txtViewAlbumItemName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Song Title"
+            android:text="Name"
             android:textAppearance="@style/TextAppearance.EldritchMusic.Subtitle1"
             android:textSize="16sp"
             app:firstBaselineToTopHeight="32dp"
-            app:layout_constraintStart_toEndOf="@+id/imgViewAlbumArt"
+            app:layout_constraintStart_toEndOf="@+id/imgViewAlbumItemAlbumArt"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/txtViewSongItemDuration"
+            android:id="@+id/txtViewAlbumItemDuration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:text="03:50"
+            android:text="3m"
             android:textAppearance="@style/TextAppearance.EldritchMusic.Caption"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -43,19 +43,19 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/txtViewArtiste"
+            android:id="@+id/txtViewAlbumItemYear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Artiste"
+            android:text="Year"
             android:textAppearance="@style/TextAppearance.EldritchMusic.Caption"
             android:textSize="12sp"
             app:firstBaselineToTopHeight="20dp"
-            app:layout_constraintStart_toEndOf="@+id/imgViewAlbumArt"
+            app:layout_constraintStart_toEndOf="@+id/imgViewAlbumItemAlbumArt"
             app:layout_constraintTop_toBottomOf="@+id/txtViewSongTitle" />
 
         <ImageView
-            android:id="@+id/imgViewAlbumArt"
+            android:id="@+id/imgViewAlbumItemAlbumArt"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginStart="16dp"

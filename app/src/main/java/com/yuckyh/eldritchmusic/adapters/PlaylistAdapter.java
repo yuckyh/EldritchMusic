@@ -55,7 +55,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
             holder.mTxtViewPlaylistItemSongCount.setText(String.format("%d songs", playlist.appGetSongs().size()));
         }
 
-        holder.itemView.setOnClickListener(v -> mOnItemClickListener.onClick(playlist.getId()));
+        holder.itemView.setOnClickListener(v -> mOnItemClickListener.onClick(playlist));
     }
 
     @Override
@@ -72,7 +72,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            mTxtViewPlaylistItemName = itemView.findViewById(R.id.txtViewPlaylistItemName);
+            mTxtViewPlaylistItemName = itemView.findViewById(R.id.txtViewSongTitle);
             mTxtViewPlaylistItemDuration = itemView.findViewById(R.id.txtViewPlaylistItemDuration);
             mTxtViewPlaylistItemSongCount = itemView.findViewById(R.id.txtViewPlaylistItemSongCount);
             mImgViewPlaylistItemPic = itemView.findViewById(R.id.imgViewPlaylistItemPic);
@@ -80,6 +80,6 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
     }
 
     public interface OnItemClickListener {
-        void onClick(String itemId);
+        void onClick(Playlist playlist);
     }
 }

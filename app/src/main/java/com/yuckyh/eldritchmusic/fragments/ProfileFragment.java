@@ -15,20 +15,18 @@ import android.widget.TextView;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
 import com.firebase.ui.auth.IdpResponse;
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.yuckyh.eldritchmusic.R;
 import com.yuckyh.eldritchmusic.activities.PlaylistActivity;
 import com.yuckyh.eldritchmusic.adapters.ArtisteAdapter;
 import com.yuckyh.eldritchmusic.adapters.PlaylistAdapter;
 import com.yuckyh.eldritchmusic.utils.ImageUtil;
-import com.yuckyh.eldritchmusic.viewmodels.ProfileViewModel;
+import com.yuckyh.eldritchmusic.viewmodels.HomeViewModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,7 +42,7 @@ public class ProfileFragment extends Fragment {
     private ImageView mImgViewPfp;
     private RecyclerView mRvProfilePlaylists;
     private final AuthListener mListener;
-    private ProfileViewModel mModel;
+    private HomeViewModel mModel;
     private RecyclerView mRvProfileArtistes;
     private TextView mTxtViewPlaylistLabel;
     private TextView mTxtViewFollowingLabel;
@@ -56,9 +54,9 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mModel = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
+        mModel = HomeViewModel.getInstance();
 
-        reload();
+        mModel.reload();
 
         if (mModel.getCurrentUser().getValue() != null) {
             return;
@@ -165,8 +163,8 @@ public class ProfileFragment extends Fragment {
                     user.appGetCreatedPlaylists(),
                     R.layout.item_playlist_card,
                     -1,
-                    itemId -> startActivity(new Intent(getContext(), PlaylistActivity.class)
-                            .putExtra("id", itemId))));
+                    playlist -> startActivity(new Intent(getContext(), PlaylistActivity.class)
+                            .putExtra("id", playlist.getId()))));
             mRvProfileArtistes.setAdapter(new ArtisteAdapter(getContext(), user.appGetFollowedArtistes()));
         });
 
@@ -181,21 +179,17 @@ public class ProfileFragment extends Fragment {
         }
 
         if (result.getResultCode() == RESULT_OK) {
-            reload();
+            mModel.reload();
             Log.d(TAG, "onSignInResult: logged in");
-        } else {
-            logout();
-            Log.e(TAG, "onSignInResult: ", response.getError());
+            return;
         }
+        logout();
+        Log.e(TAG, "onSignInResult: ", response.getError());
     }
 
     private void logout() {
-        mListener.onLogout();
         Log.d(TAG, "logout: ");
-        reload();
-    }
-
-    public void reload() {
+        mListener.onLogout();
         mModel.reload();
     }
 

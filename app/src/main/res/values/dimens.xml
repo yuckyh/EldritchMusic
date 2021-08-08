@@ -5,4 +5,5 @@
     <dimen name="text_margin">16dp</dimen>
     <dimen name="vertical_item_space">8dp</dimen>
     <dimen name="horizontal_item_space">16dp</dimen>
+    <dimen name="max_alert_dialog_height">128dp</dimen>
 </resources>

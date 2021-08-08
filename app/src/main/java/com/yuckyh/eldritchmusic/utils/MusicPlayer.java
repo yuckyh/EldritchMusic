@@ -10,6 +10,8 @@ import android.util.Log;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.yuckyh.eldritchmusic.activities.HomeActivity;
+import com.yuckyh.eldritchmusic.activities.SongPlayerActivity;
 import com.yuckyh.eldritchmusic.models.Song;
 import com.yuckyh.eldritchmusic.registries.SongRegistry;
 
@@ -21,17 +23,14 @@ public class MusicPlayer {
     private static final String TAG = MusicPlayer.class.getSimpleName();
     private static final FirebaseStorage STORAGE = FirebaseStorage.getInstance(FirebaseApp.getInstance());
     private static final MusicPlayer INSTANCE = new MusicPlayer();
-    private final ArrayList<String> mSongQueue = new ArrayList<>();
-    private final SongRegistry mRegistry = SongRegistry.getInstance();
-    private final MediaPlayer mPlayer = new MediaPlayer();
-    private final Handler mHandler = new Handler();
-    private boolean mIsMusicLoaded = false, mIsQueueLooping, mIsLooping, mIsShuffling;
-    private int mPosition;
-    private Song mCurrentSong;
-    private ArrayList<String> mShuffledQueue = new ArrayList<>();
-    private Activity mActivity;
+    private static final MediaPlayer mPlayer = new MediaPlayer();
+    private static ArrayList<String> mSongQueue, mShuffledQueue;
+    private static final Handler mHandler = new Handler();
+    private static boolean mIsMusicLoaded = false, mIsQueueLooping, mIsLooping, mIsShuffling;
+    private static int mPosition, mSongPosition;
+    private static Song mCurrentSong;
     private MusicPlayerListener mListener;
-    private SharedPreferences mPreferences;
+    private static SharedPreferences mPreferences;
 
     public static MusicPlayer getInstance() {
         return INSTANCE;
@@ -42,14 +41,15 @@ public class MusicPlayer {
     }
 
     public void init(Activity activity, MusicPlayerListener listener) {
-        mActivity = activity;
         mListener = listener;
 
-        mPreferences = activity.getBaseContext().getSharedPreferences("queue", Context.MODE_PRIVATE);
+        mPreferences = activity.getSharedPreferences("queue", Context.MODE_PRIVATE);
+
+        mSongQueue = mShuffledQueue = new ArrayList<>();
         mSongQueue.addAll(new TreeSet<>(mPreferences.getStringSet("songs", new TreeSet<>())));
         mShuffledQueue.addAll(new TreeSet<>(mPreferences.getStringSet("shuffled", new TreeSet<>())));
         mPosition = mPreferences.getInt("position", -1);
-        int songPosition = mPreferences.getInt("songPosition", -1);
+        mSongPosition = mPreferences.getInt("songPosition", -1);
         mIsShuffling = mPreferences.getBoolean("isShuffling", false);
         mIsLooping = mPreferences.getBoolean("isLooping", false);
         mIsQueueLooping = mPreferences.getBoolean("isQueueLooping", false);
@@ -58,21 +58,21 @@ public class MusicPlayer {
         Log.d(TAG, "init: " + mIsLooping + mIsQueueLooping);
 
         if (isReset) {
-            mPlayer.seekTo(songPosition);
+            mPlayer.seekTo(mSongPosition);
         }
 
         mPlayer.setOnSeekCompleteListener(mp -> mListener.onSeek((double) mp.getCurrentPosition() / 60000));
 
         mPlayer.setOnCompletionListener(mp -> {
             if (!mIsLooping) {
-                next();
+                next(activity);
             } else {
-                reload();
+                reload(activity, true);
                 mPlayer.start();
             }
         });
 
-        reload();
+        reload(activity, activity instanceof SongPlayerActivity);
     }
 
     public void togglePlayPause() {
@@ -83,41 +83,41 @@ public class MusicPlayer {
         }
     }
 
-    public void prev() {
+    public void prev(Activity activity) {
         try {
-            if(mPosition == 0 && (mIsQueueLooping || mIsLooping)) {
+            if (mPosition == 0 && (mIsQueueLooping || mIsLooping)) {
                 mPosition = mSongQueue.size();
             }
-            Song prevSong = mRegistry.itemFromId(getIdByPosition(mPosition - 1));
+            Song prevSong = SongRegistry.getInstance().itemFromId(getIdByPosition(mPosition - 1));
 
             mPosition -= 1;
             if (mCurrentSong == prevSong) {
                 mPosition -= 1;
-                prev();
+                prev(activity);
                 return;
             }
             mIsMusicLoaded = false;
-            reload();
+            reload(activity, true);
         } catch (Exception e) {
             Log.e(TAG, "prev: ", e);
         }
     }
 
-    public void next() {
+    public void next(Activity activity) {
         try {
-            if(mPosition == (mSongQueue.size() - 1) && (mIsQueueLooping || mIsLooping)) {
+            if (mPosition == (mSongQueue.size() - 1) && (mIsQueueLooping || mIsLooping)) {
                 mPosition = -1;
             }
-            Song nextSong = mRegistry.itemFromId(getIdByPosition(mPosition + 1));
+            Song nextSong = SongRegistry.getInstance().itemFromId(getIdByPosition(mPosition + 1));
 
             mPosition += 1;
             if (mCurrentSong == nextSong) {
                 mPosition += 1;
-                next();
+                next(activity);
                 return;
             }
             mIsMusicLoaded = false;
-            reload();
+            reload(activity, true);
         } catch (Exception e) {
             Log.e(TAG, "next: ", e);
         }
@@ -175,31 +175,36 @@ public class MusicPlayer {
         mListener.onSongStart();
     }
 
-    private void reload() {
+    private void reload(Activity activity, boolean autoStart) {
         Song previousSong = mCurrentSong;
         boolean hasDownloaded = false;
 
         try {
-            mCurrentSong = mRegistry.itemFromId(getIdByPosition(mPosition));
+            mCurrentSong = SongRegistry.getInstance().itemFromId(getIdByPosition(mPosition));
         } catch (Exception e) {
             Log.e(TAG, "reload: ", e);
+            return;
         }
 
         if (!mIsMusicLoaded || previousSong != mCurrentSong) {
-            download();
+            download(activity, autoStart);
             hasDownloaded = true;
         }
 
-        if(!mPlayer.isPlaying()) {
+        if (!mPlayer.isPlaying()) {
             mListener.onSongPause();
         } else {
             mListener.onSongStart();
         }
 
-        mListener.onSongReload(mCurrentSong, hasDownloaded ? 0 : mPlayer.getCurrentPosition(), mIsLooping, mIsQueueLooping, mIsShuffling);
+        mListener.onSongReload(mCurrentSong, hasDownloaded ? 0 : (double) mPlayer.getCurrentPosition() / 60000, mIsLooping, mIsQueueLooping, mIsShuffling);
     }
 
-    private void download() {
+    private void download(Activity activity, boolean autoStart) {
+        if (mCurrentSong == null) {
+            return;
+        }
+
         StorageReference reference = STORAGE.getReference("songs").child(mCurrentSong.getId() + ".mp3");
 
         mPlayer.reset();
@@ -207,17 +212,19 @@ public class MusicPlayer {
         reference.getDownloadUrl().addOnSuccessListener(uri -> {
             mIsMusicLoaded = true;
             try {
-                mPlayer.setDataSource(mActivity.getBaseContext(), uri);
+                mPlayer.setDataSource(activity, uri);
                 mPlayer.prepare();
-                start();
+                if (autoStart) {
+                    start();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
-            mActivity.runOnUiThread(new Runnable() {
+            activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    if(mPlayer.isPlaying()) {
+                    if (mPlayer.isPlaying()) {
                         mListener.onSongPlay((double) mPlayer.getCurrentPosition() / 60000, true);
                     }
                     mHandler.postDelayed(this, 100);

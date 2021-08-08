@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="72dp"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginTop="4dp"
     android:layout_marginBottom="4dp"
     android:background="?android:attr/selectableItemBackground"
@@ -18,16 +18,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/txtViewSongTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:id="@+id/imgViewSongItemAlbumArt2"
+            tools:srcCompat="@tools:sample/avatars"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_marginStart="16dp"
-            android:text="Song Title"
-            android:textAppearance="@style/TextAppearance.EldritchMusic.Subtitle1"
-            android:textSize="16sp"
-            app:firstBaselineToTopHeight="32dp"
-            app:layout_constraintStart_toEndOf="@+id/imgViewAlbumArt"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -43,26 +43,17 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/txtViewArtiste"
+            android:id="@+id/txtViewSongTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Artiste"
-            android:textAppearance="@style/TextAppearance.EldritchMusic.Caption"
-            android:textSize="12sp"
-            app:firstBaselineToTopHeight="20dp"
-            app:layout_constraintStart_toEndOf="@+id/imgViewAlbumArt"
-            app:layout_constraintTop_toBottomOf="@+id/txtViewSongTitle" />
-
-        <ImageView
-            android:id="@+id/imgViewAlbumArt"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@tools:sample/avatars" />
+            android:layout_marginBottom="16dp"
+            android:text="Name"
+            android:textAppearance="@style/TextAppearance.EldritchMusic.Headline6"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imgViewSongItemAlbumArt2"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

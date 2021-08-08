@@ -1,7 +1,5 @@
 package com.yuckyh.eldritchmusic.registries;
 
-import android.util.Log;
-
 import com.yuckyh.eldritchmusic.models.Song;
 
 public class SongRegistry extends Registry<Song> {

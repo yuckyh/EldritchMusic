@@ -1,13 +1,7 @@
 package com.yuckyh.eldritchmusic.models;
 
-import android.util.Log;
-
 import com.google.firebase.firestore.DocumentReference;
 import com.yuckyh.eldritchmusic.registries.AlbumRegistry;
-import com.yuckyh.eldritchmusic.registries.ArtisteRegistry;
-import com.yuckyh.eldritchmusic.registries.Registry;
-
-import java.util.ArrayList;
 
 public class Song extends Model {
     private String mId, mName;
@@ -16,6 +10,7 @@ public class Song extends Model {
     private DocumentReference mAlbumId;
 
     public Song() {
+        super("songs");
     }
 
     public String getId() {
@@ -27,12 +22,12 @@ public class Song extends Model {
     }
 
     @Override
-    public void setObjectsFromRefs() {
+    public void appSetObjectsFromRefs() {
         setAlbum(AlbumRegistry.getInstance().refToObject(mAlbumId));
     }
 
     @Override
-    public void setRefsFromObjects() {
+    public void appSetRefsFromObjects() {
         mAlbumId.set(mAlbum);
     }
 

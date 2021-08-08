@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EldritchMusic">
         <activity
+            android:name=".activities.EditPlaylistActivity"
+            android:exported="true" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -22,13 +25,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.EditPlaylistActivity"
-            android:exported="true" />
-        <activity
             android:name=".activities.AddToPlaylistActivity"
-            android:exported="true" />
-        <activity
-            android:name=".activities.CreatePlaylistActivity"
             android:exported="true" />
         <activity
             android:name=".activities.PlaylistActivity"
@@ -43,11 +40,6 @@
         <activity
             android:name=".activities.HomeActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <meta-data

@@ -18,11 +18,11 @@ public class User extends Model {
     private ArrayList<DocumentReference> mFollowedAlbumIds, mFollowedArtisteIds, mFollowedPlaylistIds, mRecentlyPlayedSongIds, mFavouriteIds;
 
     public User() {
-        super();
+        super("users");
     }
 
     public User(String id, String name) {
-        super();
+        this();
         mId = id;
         mName = name;
         mFollowedArtisteIds = mFollowedAlbumIds = mFollowedPlaylistIds = mRecentlyPlayedSongIds = mFavouriteIds = new ArrayList<>();
@@ -37,7 +37,7 @@ public class User extends Model {
     }
 
     @Override
-    public void setObjectsFromRefs() {
+    public void appSetObjectsFromRefs() {
         setRecentlyPlayedSongs(SongRegistry.getInstance().refListToObjectList(mRecentlyPlayedSongIds));
         setFavourites(SongRegistry.getInstance().refListToObjectList(mFavouriteIds));
         setFollowedAlbums(AlbumRegistry.getInstance().refListToObjectList(mFollowedAlbumIds));
@@ -46,12 +46,12 @@ public class User extends Model {
     }
 
     @Override
-    public void setRefsFromObjects() {
-        setRefArrayToObjArray(mRecentlyPlayedSongIds, mRecentlyPlayedSongs);
-        setRefArrayToObjArray(mFavouriteIds, mFavourites);
-        setRefArrayToObjArray(mFollowedAlbumIds, mFollowedAlbums);
-        setRefArrayToObjArray(mFollowedArtisteIds, mFollowedArtistes);
-        setRefArrayToObjArray(mFollowedPlaylistIds, mFollowedPlaylists);
+    public void appSetRefsFromObjects() {
+        setRecentlyPlayedSongIds(SongRegistry.getInstance().objectListToRefList(mRecentlyPlayedSongs));
+        setFavouriteIds(SongRegistry.getInstance().objectListToRefList(mFavourites));
+        setFollowedAlbumIds(AlbumRegistry.getInstance().objectListToRefList(mFollowedAlbums));
+        setFollowedArtisteIds(ArtisteRegistry.getInstance().objectListToRefList(mFollowedArtistes));
+        setFollowedPlaylistIds(PlaylistRegistry.getInstance().objectListToRefList(mFollowedPlaylists));
     }
 
     public ArrayList<Album> appGetFollowedAlbums() {

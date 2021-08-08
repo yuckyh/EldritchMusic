@@ -13,8 +13,8 @@
         <entry key="app/src/main/res/font/noto_sans.xml" value="0.1700657894736842" />
         <entry key="app/src/main/res/font/roboto_slab.xml" value="0.1700657894736842" />
         <entry key="app/src/main/res/layout/activity_add_to_playlist.xml" value="0.2575657894736842" />
-        <entry key="app/src/main/res/layout/activity_album.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_artiste.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_album.xml" value="0.15098684210526317" />
+        <entry key="app/src/main/res/layout/activity_artiste.xml" value="0.1260245901639344" />
         <entry key="app/src/main/res/layout/activity_auth.xml" value="0.1980263157894737" />
         <entry key="app/src/main/res/layout/activity_create_playlist.xml" value="0.1457236842105263" />
         <entry key="app/src/main/res/layout/activity_edit_playlist.xml" value="0.16578947368421051" />
@@ -22,18 +22,26 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.16578947368421051" />
         <entry key="app/src/main/res/layout/activity_playlist.xml" value="0.1980263157894737" />
         <entry key="app/src/main/res/layout/activity_song_player.xml" value="0.1534054742202419" />
+        <entry key="app/src/main/res/layout/dialog_create_playlist.xml" value="0.15098684210526317" />
         <entry key="app/src/main/res/layout/explore_song_item.xml" value="0.6491117982909982" />
         <entry key="app/src/main/res/layout/fragment_explore.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_library.xml" value="0.18486842105263157" />
+        <entry key="app/src/main/res/layout/fragment_mini_player.xml" value="0.23278218790984384" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.1770291657246213" />
+        <entry key="app/src/main/res/layout/item_album_card.xml" value="0.5686682296897403" />
         <entry key="app/src/main/res/layout/item_artiste_card.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_playlist.xml" value="0.1103749191984486" />
         <entry key="app/src/main/res/layout/item_playlist_card.xml" value="0.3926127905328694" />
+        <entry key="app/src/main/res/layout/item_playlist_card_edit.xml" value="0.18486842105263157" />
         <entry key="app/src/main/res/layout/item_playlist_card_square.xml" value="0.25239071038251365" />
         <entry key="app/src/main/res/layout/item_playlist_square.xml" value="0.2575657894736842" />
         <entry key="app/src/main/res/layout/item_song.xml" value="0.1103749191984486" />
         <entry key="app/src/main/res/layout/item_song_card.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/item_song_card_edit.xml" value="0.38163174320107" />
+        <entry key="app/src/main/res/layout/item_song_card_no_artiste.xml" value="0.13898916967509026" />
         <entry key="app/src/main/res/layout/item_song_card_simple.xml" value="0.12976729153199743" />
         <entry key="app/src/main/res/layout/playlist_item.xml" value="0.3537039966748613" />
+        <entry key="app/src/main/res/layout/popup_create_playlist.xml" value="0.15098684210526317" />
         <entry key="app/src/main/res/layout/profile_artiste_item.xml" value="0.32916666666666666" />
         <entry key="app/src/main/res/layout/profile_playlist_item.xml" value="0.40616966580976865" />
         <entry key="app/src/main/res/layout/profile_playlisty_item.xml" value="0.16578947368421051" />

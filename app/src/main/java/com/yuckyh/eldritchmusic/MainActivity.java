@@ -5,10 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.yuckyh.eldritchmusic.activities.HomeActivity;
 import com.yuckyh.eldritchmusic.registries.AlbumRegistry;
 import com.yuckyh.eldritchmusic.registries.PlaylistRegistry;
-import com.yuckyh.eldritchmusic.registries.Registry;
 import com.yuckyh.eldritchmusic.registries.SongRegistry;
 import com.yuckyh.eldritchmusic.registries.UserRegistry;
 
@@ -16,6 +16,7 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     private static boolean isFirstRun = true;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

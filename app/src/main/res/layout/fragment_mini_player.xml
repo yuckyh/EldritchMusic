@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".fragments.MiniPlayerFragment">
+
+    <com.google.android.material.card.MaterialCardView
+        app:cardCornerRadius="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout"
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/imgViewAlbumArt"
+                    android:layout_width="40dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:srcCompat="@tools:sample/avatars" />
+
+                <TextView
+                    android:id="@+id/txtViewSongTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="Song Title"
+                    android:textAppearance="@style/TextAppearance.EldritchMusic.Subtitle1"
+                    android:textSize="16sp"
+                    app:firstBaselineToTopHeight="32dp"
+                    app:layout_constraintStart_toEndOf="@+id/imgViewAlbumArt"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/txtViewArtiste"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="Artiste"
+                    android:textAppearance="@style/TextAppearance.EldritchMusic.Caption"
+                    android:textSize="12sp"
+                    app:firstBaselineToTopHeight="20dp"
+                    app:layout_constraintStart_toEndOf="@+id/imgViewAlbumArt"
+                    app:layout_constraintTop_toBottomOf="@+id/txtViewSongTitle" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <SeekBar
+                android:id="@+id/seekBarSong"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+
+            <TextView
+                android:id="@+id/txtViewPlayPosition"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0:00"
+                android:textAppearance="@style/TextAppearance.EldritchMusic.Body2"
+                app:layout_constraintStart_toStartOf="@+id/seekBarSong"
+                app:layout_constraintTop_toBottomOf="@+id/seekBarSong" />
+
+            <TextView
+                android:id="@+id/txtViewPlayDuration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4:00"
+                android:textAppearance="@style/TextAppearance.EldritchMusic.Body2"
+                app:layout_constraintEnd_toEndOf="@+id/seekBarSong"
+                app:layout_constraintTop_toBottomOf="@+id/seekBarSong" />
+
+            <ImageButton
+                android:id="@+id/imgBtnPlayPauseMini"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Play or Pause Song Button"
+                android:scaleType="fitCenter"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtViewPlayPosition"
+                app:srcCompat="@drawable/ic_round_play_pause_24"
+                app:tint="?attr/colorOnBackground" />
+
+            <ImageButton
+                android:id="@+id/imgBtnNextMini"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Next Song Button"
+                android:scaleType="fitCenter"
+                app:layout_constraintEnd_toStartOf="@+id/imgBtnShuffleMini"
+                app:layout_constraintStart_toEndOf="@+id/imgBtnPlayPauseMini"
+                app:layout_constraintTop_toBottomOf="@+id/txtViewPlayDuration"
+                app:srcCompat="@drawable/ic_round_skip_next_24"
+                app:tint="?attr/colorOnBackground" />
+
+            <ImageButton
+                android:id="@+id/imgBtnShuffleMini"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Shuffle Button"
+                android:scaleType="fitCenter"
+                app:layout_constraintEnd_toEndOf="@+id/txtViewPlayDuration"
+                app:layout_constraintTop_toBottomOf="@+id/txtViewPlayDuration"
+                app:srcCompat="@drawable/ic_round_shuffle_24"
+                app:tint="?attr/colorOnBackground" />
+
+            <ImageButton
+                android:id="@+id/imgBtnPrevMini"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Previous Song Button"
+                android:scaleType="fitCenter"
+                app:layout_constraintEnd_toStartOf="@+id/imgBtnPlayPauseMini"
+                app:layout_constraintStart_toEndOf="@+id/imgBtnLoopMini"
+                app:layout_constraintTop_toBottomOf="@+id/txtViewPlayPosition"
+                app:srcCompat="@drawable/ic_round_skip_previous_24"
+                app:tint="?attr/colorOnBackground" />
+
+            <ImageButton
+                android:id="@+id/imgBtnLoopMini"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Loop Button"
+                android:scaleType="fitCenter"
+                app:layout_constraintStart_toStartOf="@+id/txtViewPlayPosition"
+                app:layout_constraintTop_toBottomOf="@+id/txtViewPlayPosition"
+                app:srcCompat="@drawable/ic_round_repeat_24"
+                app:tint="?attr/colorOnBackground" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- TODO: Update blank fragment layout -->
+
+</FrameLayout>

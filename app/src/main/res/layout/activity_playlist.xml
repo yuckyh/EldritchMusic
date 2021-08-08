@@ -52,10 +52,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
                 android:text="Play"
                 app:icon="@drawable/ic_round_play_arrow_24"
-                app:layout_constraintEnd_toEndOf="@+id/txtViewPlaylistOwner"
-                app:layout_constraintHorizontal_bias="0.507"
+                app:layout_constraintEnd_toEndOf="@+id/materialCardView6"
+                app:layout_constraintHorizontal_bias="0.4"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txtViewPlaylistOwner" />
 
@@ -63,11 +64,13 @@
                 android:id="@+id/btnShuffle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
                 android:layout_marginTop="8dp"
                 android:text="Shuffle"
                 app:icon="@drawable/ic_round_shuffle_24"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/txtViewPlaylistOwner"
+                app:layout_constraintHorizontal_bias="0.6"
+                app:layout_constraintStart_toStartOf="@+id/materialCardView6"
                 app:layout_constraintTop_toBottomOf="@+id/txtViewPlaylistOwner" />
 
             <com.google.android.material.card.MaterialCardView

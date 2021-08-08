@@ -14,7 +14,7 @@ import java.util.Objects;
 public abstract class Registry<T extends Model> {
     Class<T> mTypeClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     protected static final String TAG = Registry.class.getSimpleName();
-    public final FirebaseFirestore DB = FirebaseFirestore.getInstance();
+    protected final FirebaseFirestore DB = FirebaseFirestore.getInstance();
     protected final ArrayList<T> mList = new ArrayList<>();
     protected OnSyncListener mOnSyncListener;
     protected String mCollectionPath;
@@ -41,7 +41,7 @@ public abstract class Registry<T extends Model> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                     T t = document.toObject(mTypeClass);
-                    t.setObjectsFromRefs();
+                    t.appSetObjectsFromRefs();
                     addToList(t);
                 }
                 if (mOnSyncListener != null) {
@@ -56,14 +56,12 @@ public abstract class Registry<T extends Model> {
 
     public void writeToDb() {
         for (T t : mList) {
-            t.setRefsFromObjects();
+            t.appSetRefsFromObjects();
             DB.collection(mCollectionPath).document(t.getId()).set(t)
                     .addOnCompleteListener(task -> Log.d(TAG, "writeToDb: " + t.getClass().getSimpleName() + ": " + t.getId()))
                     .addOnFailureListener(e -> Log.e(TAG, "writeToDb: ", e));
         }
     }
-
-    ;
 
     public void addToList(T t) {
         Log.d(TAG, "Item added to list " + t.getId());
@@ -76,7 +74,7 @@ public abstract class Registry<T extends Model> {
     }
 
     public ArrayList<T> getList() {
-        return this.mList;
+        return mList;
     }
 
     public void setSyncListener(OnSyncListener onSyncListener) {
@@ -85,11 +83,15 @@ public abstract class Registry<T extends Model> {
 
     public T refToObject(DocumentReference reference) {
         try {
-            return this.itemFromId(reference.getId());
+            return itemFromId(reference.getId());
         } catch (Exception e) {
             Log.e(TAG, "refToObject: ", e);
             return null;
         }
+    }
+
+    public DocumentReference objectToRef(T t) {
+        return DB.collection(mCollectionPath).document(t.getId());
     }
 
     public ArrayList<T> refListToObjectList(ArrayList<DocumentReference> references) {
@@ -98,15 +100,44 @@ public abstract class Registry<T extends Model> {
             return tArrayList;
         }
 
-        for (DocumentReference id : references) {
+        for (DocumentReference reference : references) {
             try {
-                tArrayList.add(this.itemFromId(id.getId()));
+                tArrayList.add(refToObject(reference));
             } catch (Exception e) {
                 Log.e(TAG, "setFollowedArtisteIds: ", e);
             }
         }
 
         return tArrayList;
+    }
+
+    public ArrayList<DocumentReference> objectListToRefList(ArrayList<T> ts) {
+        ArrayList<DocumentReference> references = new ArrayList<>();
+        if (ts == null) {
+            return references;
+        }
+
+        for (T t : ts) {
+            references.add(objectToRef(t));
+        }
+
+        return references;
+    }
+
+    public String autoId() {
+        int count = mList.size() + 1;
+        if (count <= 1) {
+            return null;
+        }
+        char identifier = mList.get(0).getId().charAt(0);
+        int freeDigits = 5 - String.valueOf(count).length();
+        StringBuilder zeros = new StringBuilder();
+
+        for (int i = 0; i < freeDigits; i++) {
+            zeros.append("0");
+        }
+
+        return identifier + zeros.toString() + count;
     }
 
     public interface OnSyncListener {

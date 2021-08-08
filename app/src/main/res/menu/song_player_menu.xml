@@ -7,10 +7,10 @@
         android:title="Add to Favourites" />
     <item
         android:id="@+id/menu_song_remove_from_favourites"
-        android:enabled="false"
+        android:enabled="true"
         android:icon="@drawable/ic_round_favorite_24"
         android:title="Remove From Favourites"
-        android:visible="false" />
+        android:visible="true" />
     <item
         android:id="@+id/menu_song_go_artiste"
         android:title="Go to Artiste" />

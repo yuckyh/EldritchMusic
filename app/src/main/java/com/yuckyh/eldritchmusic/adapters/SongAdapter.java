@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,12 +30,23 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
     private final Context mContext;
     private final ArrayList<Song> mSongs;
     private final int mLayoutId, mMaxItem;
+    private RecyclerView mRecyclerView;
 
     public SongAdapter(Context context, ArrayList<Song> songs, int layoutId, int maxItem) {
         mContext = context;
         mSongs = songs;
         mLayoutId = layoutId;
         mMaxItem = maxItem;
+    }
+
+    public ArrayList<Song> getSongs() {
+        return mSongs;
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        mRecyclerView = recyclerView;
     }
 
     @NonNull
@@ -49,11 +61,31 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
         Song song = mSongs.get(position);
 
         holder.mTxtViewSongItemTitle.setText(song.getName());
-        holder.mTxtViewSongItemDuration.setText(Duration.minutesToTimer(song.getDuration()));
-        holder.mTxtViewSongItemArtiste.setText(song.appGetAlbum().appGetArtiste().getName());
-        ImageUtil util = new ImageUtil(mContext);
-        util.downloadImageBitmap(song.appGetAlbum().getAlbumArtUrl(),
-                () -> holder.mImgViewSongItemAlbumArt.setImageBitmap(util.getBitmap()));
+
+        if (holder.mTxtViewSongItemDuration != null) {
+            holder.mTxtViewSongItemDuration.setText(Duration.minutesToTimer(song.getDuration()));
+        }
+
+        if (holder.mTxtViewSongItemArtiste != null) {
+            holder.mTxtViewSongItemArtiste.setText(song.appGetAlbum().appGetArtiste().getName());
+        }
+
+        if (holder.mImgViewSongItemAlbumArt != null) {
+            ImageUtil util = new ImageUtil(mContext);
+            util.downloadImageBitmap(song.appGetAlbum().getAlbumArtUrl(),
+                    () -> holder.mImgViewSongItemAlbumArt.setImageBitmap(util.getBitmap()));
+        }
+
+        if (holder.mImgBtnPlaylistItemDelete != null) {
+            holder.mImgBtnPlaylistItemDelete.setOnClickListener(v -> {
+                mSongs.remove(song);
+                if (mRecyclerView != null) {
+                    mRecyclerView.removeViewAt(position);
+                }
+                notifyItemRemoved(position);
+                notifyItemRangeRemoved(position, getItemCount());
+            });
+        }
 
         holder.itemView.setOnClickListener(v -> openSongPlayer(position, false, false));
     }
@@ -77,11 +109,12 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
             editor.apply();
 
             Intent songPlayerIntent = new Intent(mContext, SongPlayerActivity.class);
-            songPlayerIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            songPlayerIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             mContext.startActivity(songPlayerIntent);
             ((Activity) mContext).overridePendingTransition(R.anim.activity_slide_up, R.anim.nothing);
         }
     }
+
 
     @Override
     public int getItemCount() {
@@ -94,13 +127,15 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
     protected static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView mTxtViewSongItemTitle, mTxtViewSongItemDuration, mTxtViewSongItemArtiste;
         private final ImageView mImgViewSongItemAlbumArt;
+        private final ImageButton mImgBtnPlaylistItemDelete;
 
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
-            mImgViewSongItemAlbumArt = itemView.findViewById(R.id.imgViewSongItemAlbumArt);
-            mTxtViewSongItemTitle = itemView.findViewById(R.id.txtViewSongItemTitle);
-            mTxtViewSongItemArtiste = itemView.findViewById(R.id.txtViewSongItemArtiste);
+            mImgViewSongItemAlbumArt = itemView.findViewById(R.id.imgViewAlbumArt);
+            mTxtViewSongItemTitle = itemView.findViewById(R.id.txtViewSongTitle);
+            mTxtViewSongItemArtiste = itemView.findViewById(R.id.txtViewArtiste);
             mTxtViewSongItemDuration = itemView.findViewById(R.id.txtViewSongItemDuration);
+            mImgBtnPlaylistItemDelete = itemView.findViewById(R.id.imgBtnPlaylistItemDelete);
         }
     }
 }
