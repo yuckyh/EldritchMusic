@@ -1,6 +1,5 @@
 package com.yuckyh.eldritchmusic.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -14,19 +13,16 @@ import android.view.ViewGroup;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.yuckyh.eldritchmusic.R;
-import com.yuckyh.eldritchmusic.activities.PlaylistActivity;
-import com.yuckyh.eldritchmusic.adapters.PlaylistAdapter;
 import com.yuckyh.eldritchmusic.adapters.SongAdapter;
-import com.yuckyh.eldritchmusic.models.Playlist;
+import com.yuckyh.eldritchmusic.models.Song;
 import com.yuckyh.eldritchmusic.models.User;
 import com.yuckyh.eldritchmusic.registries.UserRegistry;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class PlaylistFragment extends Fragment {
-    private static final String TAG = PlaylistFragment.class.getSimpleName();
-    private ArrayList<Playlist> mFollowedPlaylists, mCreatedPlaylists;
+public class FavouritesFragment extends Fragment {
+    private static final String TAG = FavouritesFragment.class.getSimpleName();
+    private ArrayList<Song> mFavourites;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,8 +34,7 @@ public class PlaylistFragment extends Fragment {
         }
         try {
             User user = UserRegistry.getInstance().itemFromId(currentUser.getUid());
-            mFollowedPlaylists = user.appGetFollowedPlaylists();
-            mCreatedPlaylists = user.appGetCreatedPlaylists();
+            mFavourites = user.appGetFavourites();
         } catch (Exception e) {
             Log.e(TAG, "onCreate: ", e);
         }
@@ -48,15 +43,10 @@ public class PlaylistFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_playlist, container, false);
+        View view = inflater.inflate(R.layout.fragment_favourites, container, false);
 
-        ArrayList<Playlist> playlists = new ArrayList<>(mCreatedPlaylists);
-        playlists.addAll(mFollowedPlaylists);
-
-        RecyclerView rvPlaylists = view.findViewById(R.id.rvPlaylists);
-        rvPlaylists.setAdapter(new PlaylistAdapter(getContext(), playlists, R.layout.item_playlist, -1,
-                playlist -> startActivity(new Intent(getContext(), PlaylistActivity.class)
-                        .putExtra("id", playlist.getId()))));
+        RecyclerView rvFavourites = view.findViewById(R.id.rvFavourites);
+        rvFavourites.setAdapter(new SongAdapter(getContext(), mFavourites, R.layout.item_song, -1));
 
         return view;
     }

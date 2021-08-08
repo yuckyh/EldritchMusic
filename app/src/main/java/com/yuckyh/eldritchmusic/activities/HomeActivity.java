@@ -58,11 +58,6 @@ public class HomeActivity extends AppCompatActivity {
         setNavTab(R.id.menu_explore);
 
         HomeViewModel.setInstance(new ViewModelProvider(this).get(HomeViewModel.class));
-
-        mModel.getCurrentUser().observeForever(firebaseUser -> reloadFragments());
-        mModel.getPlaylists().observeForever(playlists -> reloadFragments());
-        mModel.getSongs().observeForever(songs -> reloadFragments());
-        mModel.getUser().observeForever(user -> reloadFragments());
     }
 
     @Override
@@ -77,15 +72,6 @@ public class HomeActivity extends AppCompatActivity {
     public void setItem(int itemId) {
         int position = HomeFragmentEnum.getPosition(itemId);
         getSupportFragmentManager().beginTransaction().replace(R.id.flHome, fragments.get(position)).commit();
-    }
-
-    private void reloadFragments() {
-        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.flHome);
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        if (Build.VERSION.SDK_INT >= 26) {
-            transaction.setReorderingAllowed(false);
-        }
-        transaction.detach(fragment).attach(fragment).commit();
     }
 
     public void setNavTab(int itemId) {

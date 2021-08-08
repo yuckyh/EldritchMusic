@@ -5,52 +5,63 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.yuckyh.eldritchmusic.R;
+import com.yuckyh.eldritchmusic.enums.LibraryFragmentEnum;
 
-// * Use the {@link LibraryFragment#newInstance} factory method to
+import java.util.ArrayList;
 
-/**
- * A simple {@link Fragment} subclass.
- * create an instance of this fragment.
- */
 public class LibraryFragment extends Fragment {
-    public LibraryFragment() {
-        // Required empty public constructor
-    }
-
-//    /**
-//     * Use this factory method to create a new instance of
-//     * this fragment using the provided parameters.
-//     *
-//     * @param param1 Parameter 1.
-//     * @param param2 Parameter 2.
-//     * @return A new instance of fragment LibraryFragment.
-//     */
-//    // TODO: Rename and change types and number of parameters
-//    public static LibraryFragment newInstance(String param1, String param2) {
-//        LibraryFragment fragment = new LibraryFragment();
-//        Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
-
+    private FavouritesFragment mFavouritesFragment;
+    private PlaylistFragment mPlaylistFragment;
+    private RecentFragment mRecentFragment;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
-//        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_library, container, false);
+        View view = inflater.inflate(R.layout.fragment_library, container, false);
+
+        TabLayout tlLibrary = view.findViewById(R.id.tlLibrary);
+        ViewPager2 vpLibrary = view.findViewById(R.id.vpLibrary);
+        vpLibrary.setAdapter(new FragmentStateAdapter(this) {
+            @NonNull
+            @Override
+            public Fragment createFragment(int position) {
+                if (position == 0) return mFavouritesFragment;
+                if (position == 1) return mPlaylistFragment;
+                return mRecentFragment;
+            }
+
+            @Override
+            public int getItemCount() {
+                return 3;
+            }
+        });
+
+        new TabLayoutMediator(tlLibrary, vpLibrary, (tab, position) -> {
+            tab.setText(LibraryFragmentEnum.getTabLabel(position));
+        }).attach();
+
+        vpLibrary.setSaveEnabled(false);
+
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mFavouritesFragment = new FavouritesFragment();
+        mPlaylistFragment = new PlaylistFragment();
+        mRecentFragment = new RecentFragment();
     }
 }

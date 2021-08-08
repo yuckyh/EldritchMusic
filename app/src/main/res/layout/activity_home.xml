@@ -11,9 +11,8 @@
         android:id="@+id/flHome"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/navMenuMain"
+        app:layout_constraintBottom_toTopOf="@id/flMusicPlayer"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -35,8 +34,8 @@
     <FrameLayout
         android:id="@+id/flMusicPlayer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/flHome"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/navMenuMain"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

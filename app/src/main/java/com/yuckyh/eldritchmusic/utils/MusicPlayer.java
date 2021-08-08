@@ -8,15 +8,21 @@ import android.os.Handler;
 import android.util.Log;
 
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.yuckyh.eldritchmusic.activities.HomeActivity;
 import com.yuckyh.eldritchmusic.activities.SongPlayerActivity;
 import com.yuckyh.eldritchmusic.models.Song;
+import com.yuckyh.eldritchmusic.models.User;
 import com.yuckyh.eldritchmusic.registries.SongRegistry;
+import com.yuckyh.eldritchmusic.registries.UserRegistry;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.TreeSet;
 
 public class MusicPlayer {
@@ -230,6 +236,31 @@ public class MusicPlayer {
                     mHandler.postDelayed(this, 100);
                 }
             });
+
+            FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+            if (currentUser == null) {
+                return;
+            }
+            try {
+                User user = UserRegistry.getInstance().itemFromId(currentUser.getUid());
+                ArrayList<Song> recents = user.appGetRecentlyPlayedSongs();
+                for (Song song : recents) Log.d(TAG, "download: " + song.getId());
+                Log.d(TAG, "download: before" + mCurrentSong.getId() + " " + recents.get(0).getId());
+                if (!recents.contains(mCurrentSong)) {
+                    Collections.reverse(recents);
+                    if (recents.size() == 20) {
+                        recents.remove(0);
+                    }
+                    recents.add(mCurrentSong);
+                    Collections.reverse(recents);
+                }
+                user.setRecentlyPlayedSongs(recents);
+                for (Song song : recents) Log.d(TAG, "download: " + song.getId());
+                Log.d(TAG, "download: after" + mCurrentSong.getId() + " " + recents.get(0).getId());
+                UserRegistry.getInstance().writeToDb();
+            } catch (Exception e) {
+                Log.e(TAG, "onCreate: ", e);
+            }
         }).addOnFailureListener(e -> Log.e(TAG, "onFailure: " + mCurrentSong.getId(), e));
     }
 
